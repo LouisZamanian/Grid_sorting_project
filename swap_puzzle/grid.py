@@ -55,10 +55,15 @@ class Grid():
 
     def is_sorted(self):
         """
-        Checks is the current state of the grid is sorte and returns the answer as a boolean.
+        Checks if the current state of the grid is sorte and returns the answer as a boolean.
         """
         # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+        for i in range(self.m):
+            for j in range(self.n):
+                if (i < self.m - 1 and self.state[i][j] > self.state[i + 1][j]) or (j < self.n - 1 and self.state[i][j] > self.state[i][j + 1]):
+                    return False
+        return True
+
 
     def swap(self, cell1, cell2):
         """
@@ -70,7 +75,9 @@ class Grid():
             The two cells to swap. They must be in the format (i, j) where i is the line and j the column number of the cell. 
         """
         # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+        i1,j1=cell1
+        i2,j2=cell2
+        self.state[i1][j1], self.state[i2][j2] = self.state[i2][j2], self.state[i1][j1]
 
     def swap_seq(self, cell_pair_list):
         """
@@ -83,8 +90,8 @@ class Grid():
             So the format should be [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
         """
         # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
-
+        for cell1, cell2 in cell_pair_list:
+            self.swap(cell1, cell2)
     @classmethod
     def grid_from_file(cls, file_name): 
         """
