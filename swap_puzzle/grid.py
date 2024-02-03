@@ -125,36 +125,58 @@ class Grid():
         return tuple(tuple(self.state[i][j] for j in range(self.n) for i in range(self.m)))
     
     def next_neighbors(self):
-        g=Graph()
+        g = Graph()
+        queue = deque([self.state])  # Ajoutez la grille initiale à la file d'attente
+
+        while queue:
+            current_grid = queue.popleft()
+
+            # Parcourir les lignes
+            for i in range(self.n):
+                for j in range(self.m - 1):
+                    # Créer une copie de la grille actuelle pour éviter de la modifier directement
+                    neighbor_grid = copy.deepcopy(current_grid)
+
+                    # Échanger les éléments adjacents sur la ligne
+                    neighbor_grid.swap((i, j), (i, j + 1))
+
+                    # Ajouter la nouvelle grille à la file d'attente
+                    queue.append(neighbor_grid)
+
+                    # Ajouter une arête au graphe
+                    g.add_edge(current_grid.transform(), neighbor_grid.transform())
+
+                    # Vérifier si la grille résultante est égale à la grille cible
+                    if neighbor_grid == creer_matrice(self.n, self.m):
+                        break
+
+            # Parcourir les colonnes
+            for i in range(self.n - 1):
+                for j in range(self.m):
+                    # Créer une copie de la grille actuelle
+                    neighbor_grid = copy.deepcopy(current_grid)
+
+                    # Échanger les éléments adjacents sur la colonne
+                    neighbor_grid.swap((i, j), (i + 1, j))
+
+                    # Ajouter la nouvelle grille à la file d'attente
+                    queue.append(neighbor_grid)
+
+                    # Ajouter une arête au graphe
+                    g.add_edge(current_grid.transform(), neighbor_grid.transform())
+
+                    # Vérifier si la grille résultante est égale à la grille cible
+                    if neighbor_grid == creer_matrice(self.n, self.m):
+                        break
+
+        return g
+
+
         
-        # Parcourir les lignes
-        for i in range(self.n):
-            for j in range(self.m - 1):
-                # Créer une copie de la grille actuelle pour éviter de la modifier directement
-                neighbor_grid = copy.deepcopy(self)
-
-                # Échanger les éléments adjacents sur la ligne
-                neighbor_grid.swap((i, j), (i, j + 1))
-                g.add_edge(self.transform, neighbor_grid.swap((i, j), (i, j + 1)).transform)
-                
-
-
-                 
-
-        # Parcourir les colonnes
-        for i in range(self.n - 1):
-            for j in range(self.m):
-                # Créer une copie de la grille actuelle
-                neighbor_grid = copy.deepcopy(self)
-
-                # Échanger les éléments adjacents sur la colonne
-                neighbor_grid.swap((i, j), (i + 1, j))
-                g.add_edge(self.transform, neighbor_grid.swap((i, j), (i + 1, j)).transform)
-            
 
                 
 
-        return neighbors
+        
 
 
 
