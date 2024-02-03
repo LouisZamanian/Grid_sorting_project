@@ -82,7 +82,7 @@ class Graph:
         self.nb_edges += 1
         self.edges.append((node1, node2))
 
-    def bfs(self, src, dst): 
+    def bfs(self, src, dst):
         """
         Finds a shortest path from src to dst by BFS.  
 
@@ -98,24 +98,21 @@ class Graph:
         path: list[NodeType] | None
             The shortest path from src to dst. Returns None if dst is not reachable from src
         """ 
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
-        def bfs(self, src, dst):
-            visited = set()
-            queue = deque([(src, [src])])  # Queue stores tuples of current node and path
+        visited = set()
+        queue = deque([(src, [src])])  # Queue stores tuples of current node and path
 
-            while queue:
-                current_node, path = queue.popleft()
-                if current_node == dst:
-                    return path  # Destination atteinte, retourne le chemin
+        while queue:
+            current_node, path = queue.popleft()
+            if current_node == dst:
+                return path  # Destination atteinte, retourne le chemin
 
-                if current_node not in visited:
-                    visited.add(current_node)
+            if current_node not in visited:
+                visited.add(current_node)
 
-                    for neighbor in self.graph[current_node]:
-                        if neighbor not in visited:
-                            queue.append((neighbor, path + [neighbor]))
-            return None
-            
+                for neighbor in self.graph[current_node]:
+                    if neighbor not in visited:
+                        queue.append((neighbor, path + [neighbor]))
+        return None
 
 
     @classmethod
@@ -150,3 +147,8 @@ class Graph:
                     raise Exception("Format incorrect")
         return graph
 
+graph1 = Graph.graph_from_file("/home/onyxia/work/ENSAE-prog2024/input/graph1.in")
+source_node = 1
+destination_node = 14
+result = graph1.bfs(source_node, destination_node)
+print(result)
