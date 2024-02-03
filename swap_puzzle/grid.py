@@ -120,6 +120,8 @@ class Grid():
             grid = Grid(m, n, initial_state)
         return grid
 
+    def transform(self):
+        return tuple(tuple(self.state[i][j] for j in range(self.n) for i in range(self.m)))
 
 
 
