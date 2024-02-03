@@ -4,6 +4,8 @@ This is the grid module. It contains the Grid class and its associated methods.
 
 import random
 from graph import Graph
+from collections import deque
+import copy
 
 class Grid():
     """
@@ -54,6 +56,8 @@ class Grid():
         """
         return f"<grid.Grid: m={self.m}, n={self.n}>"
 
+    
+
     def is_sorted(self):
         """
         Checks if the current state of the grid is sorte and returns the answer as a boolean.
@@ -65,6 +69,8 @@ class Grid():
                     return False
         return True
 
+    def creer_matrice(self,n,m):
+        return [[i+j*self.m+1 for i in range(self.m)]for j in range(self.n)]
 
     def swap(self, cell1, cell2):
         """
@@ -126,7 +132,8 @@ class Grid():
     
     def next_neighbors(self):
         g = Graph()
-        queue = deque([self.state])  # Ajoutez la grille initiale à la file d'attente
+        queue = queue = deque([Grid(self.m, self.n, self.state)])
+  # Ajoutez la grille initiale à la file d'attente
 
         while queue:
             current_grid = queue.popleft()
@@ -147,7 +154,7 @@ class Grid():
                     g.add_edge(current_grid.transform(), neighbor_grid.transform())
 
                     # Vérifier si la grille résultante est égale à la grille cible
-                    if neighbor_grid == creer_matrice(self.n, self.m):
+                    if neighbor_grid.is_sorted():
                         break
 
             # Parcourir les colonnes
@@ -166,13 +173,13 @@ class Grid():
                     g.add_edge(current_grid.transform(), neighbor_grid.transform())
 
                     # Vérifier si la grille résultante est égale à la grille cible
-                    if neighbor_grid == creer_matrice(self.n, self.m):
+                    if neighbor_grid.is_sorted():
                         break
 
         return g
 
 
-        
+
 
                 
 
