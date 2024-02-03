@@ -3,6 +3,7 @@ This is the grid module. It contains the Grid class and its associated methods.
 """
 
 import random
+from graph import Graph
 
 class Grid():
     """
@@ -122,6 +123,39 @@ class Grid():
 
     def transform(self):
         return tuple(tuple(self.state[i][j] for j in range(self.n) for i in range(self.m)))
+    
+    def next_neighbors(self):
+        g=Graph()
+        
+        # Parcourir les lignes
+        for i in range(self.n):
+            for j in range(self.m - 1):
+                # Créer une copie de la grille actuelle pour éviter de la modifier directement
+                neighbor_grid = copy.deepcopy(self)
+
+                # Échanger les éléments adjacents sur la ligne
+                neighbor_grid.swap((i, j), (i, j + 1))
+                g.add_edge(self.transform, neighbor_grid.swap((i, j), (i, j + 1)).transform)
+                
+
+
+                 
+
+        # Parcourir les colonnes
+        for i in range(self.n - 1):
+            for j in range(self.m):
+                # Créer une copie de la grille actuelle
+                neighbor_grid = copy.deepcopy(self)
+
+                # Échanger les éléments adjacents sur la colonne
+                neighbor_grid.swap((i, j), (i + 1, j))
+                g.add_edge(self.transform, neighbor_grid.swap((i, j), (i + 1, j)).transform)
+            
+
+                
+
+        return neighbors
+
 
 
 
