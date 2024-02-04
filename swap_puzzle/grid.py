@@ -135,6 +135,8 @@ class Grid():
         compt=0
         queue = deque([Grid(self.m, self.n, self.state)])
         cond=False
+        arretes=0
+        noeuds=1
   # Ajoutez la grille initiale à la file d'attente
         
         while cond==False:
@@ -153,7 +155,11 @@ class Grid():
                     neighbor_grid.swap((i, j), (i, j + 1))
 
                      # Ajouter une arête au graphe
+                    if neighbor_grid.transform() in g.nodes or neighbor_grid.transform() in g.edges:
+                        noeuds+=1
                     g.add_edge(current_grid.transform(),neighbor_grid.transform())
+                    arretes+=1
+
 
                     if neighbor_grid.is_sorted():
                         cond=True
@@ -179,7 +185,10 @@ class Grid():
                         neighbor_grid.swap((i, j), (i + 1, j))
 
                      # Ajouter une arête au graphe
+                        if neighbor_grid.transform() in g.nodes or neighbor_grid.transform() in g.edges:
+                            noeuds+=1   
                         g.add_edge(current_grid.transform(),neighbor_grid.transform())
+                        arretes+=1
 
                         if neighbor_grid.is_sorted():
                             cond=True
@@ -190,9 +199,8 @@ class Grid():
                             queue.append(neighbor_grid)
                 if cond==True:
                     break
-        print(neighbor_grid)
                     
-        return g
+        return g,arretes,noeuds
 
 
 

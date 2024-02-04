@@ -19,9 +19,13 @@ neighbor_graph = exemple.next_neighbors()
 # Grille cible
 target_grid = Grid(2, 2, [[1, 2], [3, 4]])
 
+# Create the neighbor graph
+neighbor_graph, arretes, noeuds = exemple.next_neighbors()
 
-# Obtenez le chemin le plus court entre la grille initiale et la grille cible
+# Obtain the shortest path between the initial and target grids
 shortest_path = neighbor_graph.bfs(exemple.transform(), target_grid.transform())
 
-# Affichez le chemin le plus court
+# Display the shortest path
 print("Shortest Path:", shortest_path)
+print("arretes",arretes)
+print("noeuds",noeuds)
