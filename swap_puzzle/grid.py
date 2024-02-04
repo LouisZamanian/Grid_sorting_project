@@ -65,7 +65,7 @@ class Grid():
         # TODO: implement this function (and remove the line "raise NotImplementedError").
         for i in range(self.m):
             for j in range(self.n):
-                if (i < self.m - 1 and self.state[i][j] > self.state[i + 1][j]) or (j < self.n - 1 and self.state[i][j] > self.state[i][j + 1]):
+                if (i<self.m-1 and self.state[i][self.n-1] > self.state[i + 1][0]) or (j < self.n - 1 and self.state[i][j] > self.state[i][j + 1]):
                     return False
         return True
 
@@ -132,13 +132,18 @@ class Grid():
     
     def next_neighbors(self):
         g = Graph()
-        queue = queue = deque([Grid(self.m, self.n, self.state)])
+        compt=0
+        queue = deque([Grid(self.m, self.n, self.state)])
+        cond=False
   # Ajoutez la grille initiale à la file d'attente
-
-        while queue:
-            current_grid = queue.popleft()
-
+        
+        while cond==False:
+            compt+=1
+            print(compt)
+            current_grid=queue.popleft()
+            
             # Parcourir les lignes
+            
             for i in range(self.n):
                 for j in range(self.m - 1):
                     # Créer une copie de la grille actuelle pour éviter de la modifier directement
@@ -147,35 +152,46 @@ class Grid():
                     # Échanger les éléments adjacents sur la ligne
                     neighbor_grid.swap((i, j), (i, j + 1))
 
-                    # Ajouter la nouvelle grille à la file d'attente
-                    queue.append(neighbor_grid)
+                     # Ajouter une arête au graphe
+                    g.add_edge(current_grid.transform(),neighbor_grid.transform())
 
-                    # Ajouter une arête au graphe
-                    g.add_edge(current_grid.transform(), neighbor_grid.transform())
-
-                    # Vérifier si la grille résultante est égale à la grille cible
                     if neighbor_grid.is_sorted():
+                        cond=True
                         break
+                
+                    else:
+                    # Ajouter la nouvelle grille à la file d'attente
+                        queue.append(neighbor_grid)
+                if cond==True:
+                    break
+
+
+
 
             # Parcourir les colonnes
-            for i in range(self.n - 1):
-                for j in range(self.m):
+            if cond==False:
+                for i in range(self.n - 1):
+                    for j in range(self.m):
                     # Créer une copie de la grille actuelle
-                    neighbor_grid = copy.deepcopy(current_grid)
+                        neighbor_grid = copy.deepcopy(current_grid)
 
                     # Échanger les éléments adjacents sur la colonne
-                    neighbor_grid.swap((i, j), (i + 1, j))
+                        neighbor_grid.swap((i, j), (i + 1, j))
 
+                     # Ajouter une arête au graphe
+                        g.add_edge(current_grid.transform(),neighbor_grid.transform())
+
+                        if neighbor_grid.is_sorted():
+                            cond=True
+                            break
+                
+                        else:
                     # Ajouter la nouvelle grille à la file d'attente
-                    queue.append(neighbor_grid)
-
-                    # Ajouter une arête au graphe
-                    g.add_edge(current_grid.transform(), neighbor_grid.transform())
-
-                    # Vérifier si la grille résultante est égale à la grille cible
-                    if neighbor_grid.is_sorted():
-                        break
-
+                            queue.append(neighbor_grid)
+                if cond==True:
+                    break
+        print(neighbor_grid)
+                    
         return g
 
 
