@@ -155,7 +155,7 @@ class Grid():
 
 
     def generate_all_grid_states(self):
-        m, n = len(self.State), len(self.state[0])
+        m, n = len(self.state), len(self.state[0])
         visited = set()
         all_states = []
 
