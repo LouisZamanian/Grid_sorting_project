@@ -18,7 +18,7 @@ class Solver(Grid):
         self.n = n
         self.m = m
 
-    def get_solution(self, L):
+    def get_solution(self):
         """
         Solves the grid and returns the sequence of swaps at the format 
         [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...]. 
@@ -28,33 +28,33 @@ class Solver(Grid):
         swp = []
         nb = 0
         Lo = self.creer_matrice(self.n, self.m)  # Use self to access the class attribute
-        while L != Lo:
+        while self.state != Lo:
             for i in range(1, self.n * self.m + 1):
                 x = self.trouver_indice_element(Lo, i)  # Use self to access the method
                 for k in range(self.n):
                     for j in range(self.m):
-                        if L[k][j] == i:
+                        if self.state[k][j] == i:
                             ind = [k, j]
                 while ind != x:
                     nb += 1
                     if x[0] < ind[0]:
-                        self.swap(L, (ind[0] - 1, ind[1]), (ind[0], ind[1]))
-                        swp.append((L[ind[0] - 1][ind[1]], L[ind[0]][ind[1]]))
+                        self.swap(self.state, (ind[0] - 1, ind[1]), (ind[0], ind[1]))
+                        swp.append((self.state[ind[0] - 1][ind[1]], self.state[ind[0]][ind[1]]))
                         ind[0] -= 1
-                        print(L)
+                        
                     elif x[0] > ind[0]:
-                        self.swap(L, (ind[0] + 1, ind[1]), (ind[0], ind[1]))
-                        swp.append((L[ind[0] + 1][ind[1]], L[ind[0]][ind[1]]))
+                        self.swap(self.state, (ind[0] + 1, ind[1]), (ind[0], ind[1]))
+                        swp.append((self.state[ind[0] + 1][ind[1]], self.state[ind[0]][ind[1]]))
                         ind[0] += 1
-                        print(L)
+                        
                     if x[1] < ind[1]:
-                        self.swap(L, (ind[0], ind[1] - 1), (ind[0], ind[1]))
-                        swp.append((L[ind[0]][ind[1] - 1], L[ind[0]][ind[1]]))
+                        self.swap(self.state, (ind[0], ind[1] - 1), (ind[0], ind[1]))
+                        swp.append((self.state[ind[0]][ind[1] - 1], self.state[ind[0]][ind[1]]))
                         ind[1] -= 1
-                        print(L)
+                        
                     elif x[1] > ind[1]:
-                        self.swap(L, (ind[0] + 1, ind[1]), (ind[0], ind[1]))
-                        swp.append((L[ind[0] + 1][ind[1]], L[ind[0]][ind[1]]))
+                        self.swap(self.state, (ind[0] + 1, ind[1]), (ind[0], ind[1]))
+                        swp.append((self.state[ind[0] + 1][ind[1]], self.state[ind[0]][ind[1]]))
                         ind[1] += 1
-                        print(L)
-        return L, nb, swp
+                        
+        return nb, swp

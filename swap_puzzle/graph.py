@@ -148,6 +148,11 @@ class Graph:
         return graph
 
     
+
+
+
+
+
 graph1 = Graph.graph_from_file("/home/onyxia/work/ENSAE-prog2024/input/graph1.in")
 source_node = 1
 destination_node = 14

@@ -6,6 +6,8 @@ import random
 from graph import Graph
 from collections import deque
 import copy
+import pygame
+import sys
 
 class Grid():
     """
@@ -56,7 +58,22 @@ class Grid():
         """
         return f"<grid.Grid: m={self.m}, n={self.n}>"
 
-    
+    def representation(self):
+        ligne_superieure = "+-------" * (self.n) + "+\n"
+
+        # Lignes du milieu
+        lignes_milieu = ""
+        for i in range(self.m):
+            lignes_milieu += "|"
+            for j in range(self.n):
+                lignes_milieu += str(self.state[i][j]).center(7)
+                if j < self.n - 1:
+                    lignes_milieu += "|"
+            lignes_milieu += "|\n" + "+-------" * (self.n) + "+\n"
+
+        texte = ligne_superieure + lignes_milieu
+        print(texte)
+
 
     def is_sorted(self):
         """
@@ -127,9 +144,62 @@ class Grid():
             grid = Grid(m, n, initial_state)
         return grid
 
+
+
     def transform(self):
         return tuple(tuple(self.state[i][j] for j in range(self.n) for i in range(self.m)))
-    
+
+
+
+
+
+
+    def generate_all_grid_states(self):
+        m, n = len(self.State), len(self.state[0])
+        visited = set()
+        all_states = []
+
+        queue = deque([self.state])
+        visited.add(tuple(map(tuple, self.state)))  # Convertir la matrice en tuple pour la rendre hashable
+
+        while queue:
+            current_grid = queue.popleft()
+            all_states.append(current_grid)
+
+            for i in range(m):
+                for j in range(n - 1):
+                    # Créer une copie de la grille actuelle pour éviter de la modifier directement
+                    new_grid = [row.copy() for row in current_grid]
+                    # Échanger les éléments adjacents sur la ligne
+                    new_grid[i][j], new_grid[i][j + 1] = new_grid[i][j + 1], new_grid[i][j]
+
+                    # Vérifier si le nouvel état a déjà été visité
+                    if tuple(map(tuple, new_grid)) not in visited:
+                        visited.add(tuple(map(tuple, new_grid)))
+                        queue.append(new_grid)
+
+            for i in range(m - 1):
+                for j in range(n):
+                    # Créer une copie de la grille actuelle
+                    new_grid = [row.copy() for row in current_grid]
+                    # Échanger les éléments adjacents sur la colonne
+                    new_grid[i][j], new_grid[i + 1][j] = new_grid[i + 1][j], new_grid[i][j]
+
+                    # Vérifier si le nouvel état a déjà été visité
+                    if tuple(map(tuple, new_grid)) not in visited:
+                        visited.add(tuple(map(tuple, new_grid)))
+                        queue.append(new_grid)
+
+        return all_states
+
+
+
+
+
+
+
+
+
     def next_neighbors(self):
         g = Graph()
         compt=0
@@ -203,7 +273,49 @@ class Grid():
         return g,arretes,noeuds
 
 
+    def next_neighbors_new(self):
+        g = Graph()
+        queue = deque([self])
+        visited = {self.transform()}  # Utilisation d'un ensemble pour stocker les états visités
 
+        while queue:
+            current_grid = queue.popleft()
+
+            for i in range(self.n):
+                for j in range(self.m - 1):
+                    neighbor_grid = copy.deepcopy(current_grid)
+                    neighbor_grid.swap((i, j), (i, j + 1))
+                    neighbor_transform = neighbor_grid.transform()
+
+                    if neighbor_transform not in visited:
+                        visited.add(neighbor_transform)
+                        queue.append(neighbor_grid)
+
+                    g.add_edge(current_grid.transform(), neighbor_transform)
+
+                    if neighbor_grid.is_sorted():
+                        return g, g.num_edges, g.num_nodes
+
+            for i in range(self.n - 1):
+                for j in range(self.m):
+                    neighbor_grid = copy.deepcopy(current_grid)
+                    neighbor_grid.swap((i, j), (i + 1, j))
+                    neighbor_transform = neighbor_grid.transform()
+
+                    if neighbor_transform not in visited:
+                        visited.add(neighbor_transform)
+                        queue.append(neighbor_grid)
+
+                    g.add_edge(current_grid.transform(), neighbor_transform)
+
+                    if neighbor_grid.is_sorted():
+                        return g, g.nb_edges, g.nb_nodes
+
+        return g, g.nb_edges, g.nb_nodes
+
+
+grid = Grid(3, 4)
+grid.representation()
 
                 
 

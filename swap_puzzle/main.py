@@ -11,21 +11,25 @@ file_name = data_path + "grid0.in"
 #g = Grid.grid_from_file(file_name)
 #print(g)
 
-exemple = Grid(2, 2, [[4, 3], [1, 2]])
+exemple = Grid(3, 3, [[4,2,6], [9,1,3],[8,7,5]])
+
+
 
 # Obtenez le graphe des voisins
-neighbor_graph = exemple.next_neighbors()
+#neighbor_graph = exemple.next_neighbors()
 
 # Grille cible
-target_grid = Grid(2, 2, [[1, 2], [3, 4]])
+target_grid = Grid(3, 3, [[1, 2, 3], [4,5,6],[7,8,9]])
 
 # Create the neighbor graph
-neighbor_graph, arretes, noeuds = exemple.next_neighbors()
+neighbor_graph, arretes, noeuds = exemple.next_neighbors_new()
 
 # Obtain the shortest path between the initial and target grids
 shortest_path = neighbor_graph.bfs(exemple.transform(), target_grid.transform())
+
 
 # Display the shortest path
 print("Shortest Path:", shortest_path)
 print("arretes",arretes)
 print("noeuds",noeuds)
+
