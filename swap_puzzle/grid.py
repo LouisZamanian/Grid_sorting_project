@@ -6,7 +6,7 @@ import random
 from graph import Graph
 from collections import deque
 import copy
-import pygame
+import matplotlib.pyplot as plt
 import sys
 
 class Grid():
@@ -195,17 +195,17 @@ class Grid():
 
     def representation(self):
         fig, ax = plt.subplots()
-        ax.set_xlim(0, self.m)  #on créer les axes verticaux et horizontaux à la bonne taille
-        ax.set_ylim(0, self.n)
+        ax.set_xlim(0, self.n)  #on créer les axes verticaux et horizontaux à la bonne taille
+        ax.set_ylim(0, self.m)
 
-        ax.set_xticks(range(self.n+1))
-        ax.set_yticks(range(self.m))
+        ax.set_xticks(range(self.m+1))
+        ax.set_yticks(range(self.n))
         ax.set_xticklabels([]) #on supprime les graduations pour ne garder que la grille
         ax.set_yticklabels([])
         ax.grid(True, which='major', linestyle='-', linewidth=2, color='black') #on trace le cadrillage
-        for i in range(self.n):
-            for j in range(self.m):
-                ax.text(j+0.5,self.n-i-0.5, str(self.state[i][j]), fontsize=12) #on remplit la grille 
+        for i in range(self.m):
+            for j in range(self.n):
+                ax.text(j+0.5,self.m-i-0.5, str(self.state[i][j]), fontsize=12) #on remplit la grille 
         plt.show()
 
 
