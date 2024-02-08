@@ -7,9 +7,6 @@ def trouver_indice_element(liste_de_listes, element):
             return [i, j]  # Retourne le tuple (indice_de_liste, indice_d'élément)
     return None
 
-def creer_matrice(n,m):
-    return [[i+j*m+1 for i in range(m)]for j in range(n)]
-
 
 class Solver(Grid):
     def __init__(self, n, m):
@@ -17,6 +14,12 @@ class Solver(Grid):
         super().__init__(n, m)
         self.n = n
         self.m = m
+
+    def creer_matrice(self,n,m):
+        return [[i+j*self.m+1 for i in range(self.m)]for j in range(self.n)]
+
+
+
 
     def get_solution(self):
         """
