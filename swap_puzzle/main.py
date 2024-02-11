@@ -11,7 +11,7 @@ file_name = data_path + "grid0.in"
 #g = Grid.grid_from_file(file_name)
 #print(g)
 
-exemple = Grid(3, 3, [[3,4,6], [5,2,1],[7,8,9]])
+#exemple = Grid(3, 3, [[3,4,6], [5,2,1],[7,8,9]])
 
 
 
@@ -19,7 +19,7 @@ exemple = Grid(3, 3, [[3,4,6], [5,2,1],[7,8,9]])
 #neighbor_graph = exemple.next_neighbors()
 
 # Grille cible
-target_grid = Grid(2,2, [[1, 2,3], [4,5,6],[7,8,9]])
+#target_grid = Grid(2,2, [[1, 2,3], [4,5,6],[7,8,9]])
 
 # Create the neighbor graph
 #neighbor_graph, arretes, noeuds = exemple.next_neighbors_new()
