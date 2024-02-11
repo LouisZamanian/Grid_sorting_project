@@ -1,4 +1,5 @@
 from grid import Grid
+from solver import Solver
 
 #g = Grid(2, 3)
 #print(g)
@@ -24,7 +25,6 @@ file_name = data_path + "grid0.in"
 # Create the neighbor graph
 #neighbor_graph, arretes, noeuds = exemple.next_neighbors_new()
 
-print(len(exemple.generate_all_grid_states()))
 # Obtain the shortest path between the initial and target grids
 #shortest_path = neighbor_graph.bfs(exemple.transform(), target_grid.transform())
 
@@ -34,3 +34,12 @@ print(len(exemple.generate_all_grid_states()))
 #print("arretes",arretes)
 #print("noeuds",noeuds)
 
+# Créez une instance de la classe Solver avec les dimensions de la grille et l'état initial
+exemple_solver = Solver(2, 2, initial_state=[[1, 3], [4, 2]])
+
+# Appelez la méthode get_solution pour obtenir la solution du puzzle
+nombre_swaps, sequence_swaps = exemple_solver.get_solution()
+
+# Affichez les résultats
+print("Nombre de swaps nécessaires :", nombre_swaps)
+print("Sequence de swaps :", sequence_swaps)

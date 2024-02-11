@@ -74,6 +74,13 @@ class Grid():
         texte = ligne_superieure + lignes_milieu
         print(texte)
 
+    def trouver_indice_element(self,liste_de_listes, element):
+        for i, sous_liste in enumerate(liste_de_listes):
+            if element in sous_liste:
+                j = sous_liste.index(element)
+                return [i, j]  # Retourne le tuple (indice_de_liste, indice_d'élément)
+        return None
+
 
     def is_sorted(self):
         """
