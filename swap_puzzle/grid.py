@@ -162,42 +162,43 @@ class Grid():
 
 
     def generate_all_grid_states(self):
-        m, n = len(self.state), len(self.state[0])
-        visited = set()
-        all_states = []
-
-        queue = deque([self.state])
-        visited.add(tuple(map(tuple, self.state)))  # Convertir la matrice en tuple pour la rendre hashable
+        g=Graph()
+        queue = deque([self])
+        visited = {self.transform()} 
 
         while queue:
             current_grid = queue.popleft()
-            all_states.append(current_grid)
 
-            for i in range(m):
-                for j in range(n - 1):
+            for i in range(self.n):
+                for j in range(self.m - 1):
                     # Créer une copie de la grille actuelle pour éviter de la modifier directement
-                    new_grid = [row.copy() for row in current_grid]
+                    new_grid =copy.deepcopy(current_grid)
                     # Échanger les éléments adjacents sur la ligne
-                    new_grid[i][j], new_grid[i][j + 1] = new_grid[i][j + 1], new_grid[i][j]
+                    new_grid.swap((i, j), (i, j+1))
+                    new_grid_transform=new_grid.transform()
+                    
 
                     # Vérifier si le nouvel état a déjà été visité
-                    if tuple(map(tuple, new_grid)) not in visited:
-                        visited.add(tuple(map(tuple, new_grid)))
+                    if new_grid_transform not in visited:
+                        visited.add(new_grid_transform)
                         queue.append(new_grid)
+                        g.add_edge(current_grid.transform(), new_grid_transform)
 
-            for i in range(m - 1):
-                for j in range(n):
+            for i in range(self.n - 1):
+                for j in range(self.m):
                     # Créer une copie de la grille actuelle
-                    new_grid = [row.copy() for row in current_grid]
+                    new_grid =copy.deepcopy(current_grid)
                     # Échanger les éléments adjacents sur la colonne
-                    new_grid[i][j], new_grid[i + 1][j] = new_grid[i + 1][j], new_grid[i][j]
+                    new_grid.swap((i, j), (i+1, j))
+                    new_grid_transform=new_grid.transform()
 
                     # Vérifier si le nouvel état a déjà été visité
-                    if tuple(map(tuple, new_grid)) not in visited:
-                        visited.add(tuple(map(tuple, new_grid)))
+                    if new_grid_transform not in visited:
+                        visited.add(new_grid_transform)
                         queue.append(new_grid)
+                        g.add_edge(current_grid.transform(), new_grid_transform)
 
-        return all_states
+        return visited,len(visited)
 
 
     def representation(self):
