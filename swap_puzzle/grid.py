@@ -314,7 +314,7 @@ class Grid():
                     g.add_edge(current_grid.transform(), neighbor_transform)
 
                     if neighbor_grid.is_sorted():
-                        return g, g.num_edges, g.num_nodes
+                        return g, g.nb_edges, g.nb_nodes
 
             for i in range(self.n - 1):
                 for j in range(self.m):
@@ -333,8 +333,6 @@ class Grid():
 
         return g, g.nb_edges, g.nb_nodes
 
-
-<<<<<<< HEAD
     def distance(self):
         compt=0
         M=self.creer_matrice(self.m,self.n)
@@ -345,12 +343,8 @@ class Grid():
         return compt
 
                 
-    
-grid = Grid(2,2,[[1,2],[4,3]])
-print(grid.distance)
-#grid.representation()
-=======
-    def heuristique(self):
+
+    def heuristique_old(self):
         compt=0
         L=self.creer_matrice(self.m,self.n)
         for i in range(self.m):
@@ -358,15 +352,73 @@ print(grid.distance)
                 if self.state[i][j]!=L[i][j]:
                     compt+=1
         return compt
+
+    def heuristique(self):
+        s=0
+        L=self.creer_matrice(self.m,self.n)
+        for i in range(self.m):
+            for j in range(self.n):
+                s+= abs(self.state[i][j]-L[i][j])
+        return s
+
+
+    def sort(self,L):
+        for i in range(len(L)):
+            for j in range(i+1,len(L)):
+                if L[i].heuristique()>L[j].heuristique():
+                    L[i],L[j]=L[j],L[i]
+        return L
+
+    def a_star(self):
+        g = Graph()
+        queue = deque([self])
+        visited = {self.transform()}  # Utilisation d'un ensemble pour stocker les états visités
+
+        while queue:
+            current_grid = queue.popleft()
+
+            for i in range(self.n):
+                for j in range(self.m - 1):
+                    neighbor_grid = copy.deepcopy(current_grid)
+                    neighbor_grid.swap((i, j), (i, j + 1))
+                    neighbor_transform = neighbor_grid.transform()
+
+                    if neighbor_transform not in visited:
+                        visited.add(neighbor_transform)
+                        queue.append(neighbor_grid)
+                        queue=current_grid.sort(queue)
+
+                    g.add_edge(current_grid.transform(), neighbor_transform)
+
+                    if neighbor_grid.is_sorted():
+                        return g, g.nb_edges, g.nb_nodes
+
+            for i in range(self.n - 1):
+                for j in range(self.m):
+                    neighbor_grid = copy.deepcopy(current_grid)
+                    neighbor_grid.swap((i, j), (i + 1, j))
+                    neighbor_transform = neighbor_grid.transform()
+
+                    if neighbor_transform not in visited:
+                        visited.add(neighbor_transform)
+                        queue.append(neighbor_grid)
+                        queue=current_grid.sort(queue)
+
+                    g.add_edge(current_grid.transform(), neighbor_transform)
+
+                    if neighbor_grid.is_sorted():
+                        return g, g.nb_edges, g.nb_nodes
+
+        return g, g.nb_edges, g.nb_nodes
+            
     
 
         
 
-grid = Grid(2,2,[[1,2],[4,3]])
-print(grid.heuristique())
+
+
 
 #print(grid.representation())
->>>>>>> 5a29434 (definition d'une potentielle heuristique)
 
                 
 
