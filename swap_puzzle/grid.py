@@ -334,8 +334,20 @@ class Grid():
         return g, g.nb_edges, g.nb_nodes
 
 
-grid = Grid(3, 4)#blablakndzksd
-grid.representation()
+    def distance(self):
+        compt=0
+        M=self.creer_matrice(self.m,self.n)
+        for i in range(self.m):
+            for j in range(self.n):
+                if self.state[i][j]!=M[i][j]:
+                    compt+=1
+        return compt
+
+                
+    
+grid = Grid(2,2,[[1,2],[4,3]])
+print(grid.distance)
+#grid.representation()
 
                 
 
