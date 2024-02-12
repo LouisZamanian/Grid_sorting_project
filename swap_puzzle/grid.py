@@ -334,6 +334,7 @@ class Grid():
         return g, g.nb_edges, g.nb_nodes
 
 
+<<<<<<< HEAD
     def distance(self):
         compt=0
         M=self.creer_matrice(self.m,self.n)
@@ -348,6 +349,24 @@ class Grid():
 grid = Grid(2,2,[[1,2],[4,3]])
 print(grid.distance)
 #grid.representation()
+=======
+    def heuristique(self):
+        compt=0
+        L=self.creer_matrice(self.m,self.n)
+        for i in range(self.m):
+            for j in range(self.n):
+                if self.state[i][j]!=L[i][j]:
+                    compt+=1
+        return compt
+    
+
+        
+
+grid = Grid(2,2,[[1,2],[4,3]])
+print(grid.heuristique())
+
+#print(grid.representation())
+>>>>>>> 5a29434 (definition d'une potentielle heuristique)
 
                 
 

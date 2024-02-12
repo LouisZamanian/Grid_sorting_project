@@ -3,6 +3,10 @@ from solver import Solver
 
 #g = Grid(2, 3)
 #print(g)
+<<<<<<< HEAD
+=======
+#romain 
+>>>>>>> 5a29434 (definition d'une potentielle heuristique)
 data_path = "../input/"
 file_name = data_path + "grid0.in"
 
