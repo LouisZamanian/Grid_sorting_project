@@ -152,8 +152,10 @@ class Graph:
 
 
 
-graph1 = Graph.graph_from_file("/home/onyxia/work/ENSAE-prog2024/input/graph1.in")
+#graph1 = Graph.graph_from_file("work/ENSAE-prog2024/input/graph1.in")
 source_node = 7
 destination_node = 14
-result = graph1.bfs(source_node, destination_node)
-print(result)
+#result = graph1.bfs(source_node, destination_node)
+#print(result)
+
+
