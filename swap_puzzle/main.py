@@ -3,7 +3,7 @@ from solver import Solver
 
 #g = Grid(2, 3)
 #print(g)
-# Louis
+# romain
 data_path = "../input/"
 file_name = data_path + "grid0.in"
 
