@@ -335,7 +335,7 @@ class Grid():
         return g, g.nb_edges, g.nb_nodes
 
 
-grid = Grid(3, 4)
+grid = Grid(3, 4)#blablakndzksd
 grid.representation()
 
                 
