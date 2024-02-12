@@ -8,7 +8,6 @@ from collections import deque
 import copy
 import matplotlib.pyplot as plt
 import sys
-
 class Grid():
     """
     A class representing the grid from the swap puzzle. It supports rectangular grids. 
@@ -335,7 +334,7 @@ class Grid():
         return g, g.nb_edges, g.nb_nodes
 
 
-grid = Grid(3, 4)
+grid = Grid(3, 4)#blablakndzksd
 grid.representation()
 
                 
