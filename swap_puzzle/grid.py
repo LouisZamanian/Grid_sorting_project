@@ -8,7 +8,7 @@ from collections import deque
 import copy
 import matplotlib.pyplot as plt
 import sys
-jeanne
+jeanne Pierredon
 class Grid():
     """
     A class representing the grid from the swap puzzle. It supports rectangular grids. 
