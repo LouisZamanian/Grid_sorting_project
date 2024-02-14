@@ -418,8 +418,6 @@ class Grid():
 
 
 
-#print(grid.representation())
-
                 
 
         
