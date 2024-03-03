@@ -20,23 +20,26 @@ exemple = Grid(3,3, [[1,5,3],[4,2,6],[9,7,8]])
 
 
 # Obtenez le graphe des voisins
-neighbor_graph = exemple.a_star()
+#neighbor_graph = exemple.a_star()
 
 # Grille cible
 target_grid = Grid(3,3, [[1,2,3],[4,5,6],[7,8,9]])
 
+
+
+
 # Create the neighbor graph
 #neighbor_graph, arretes, noeuds = exemple.a_star()
-neighbor_graph, arretes, noeuds = exemple.next_neighbors_new()
+#neighbor_graph, arretes, noeuds = exemple.next_neighbors_new()
 
 # Obtain the shortest path between the initial and target grids
-shortest_path = neighbor_graph.bfs(exemple.transform(), target_grid.transform())
+#shortest_path = neighbor_graph.bfs(exemple.transform(), target_grid.transform())
 
 
 # Display the shortest path
-print("Shortest Path:", shortest_path)
-print("arretes",arretes)
-print("noeuds",noeuds)
+#print("Shortest Path:", shortest_path)
+#print("arretes",arretes)
+#print("noeuds",noeuds)
 
 # Créez une instance de la classe Solver avec les dimensions de la grille et l'état initial
 #exemple_solver = Solver(2, 2, initial_state=[[1, 3], [4, 2]])

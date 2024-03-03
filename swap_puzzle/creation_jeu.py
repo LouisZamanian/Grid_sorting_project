@@ -1,5 +1,6 @@
 import pygame
 from grid import Grid
+import random
 pygame.init()
 
 
@@ -12,14 +13,15 @@ gray = (200, 200, 200)
 L0 = Grid(2,2,[[1, 3], [2, 4]])
 L = Grid(3,3,[[1, 2, 5], [3, 4, 6], [9, 7, 8]])
 L1=Grid(4,4,[[1,16,14,12],[13,11,10,9],[5,2,8,3],[4,6,7,15]])
-m = len(L1)
-n = len(L1[0])
+#m0, n0 = L0.m, L0.n
+#m, n = L.m, L.n
+#m1, n1 = L1.m, L1.n
 size = 100
 swap_fb=[[(1,1),(1,2)]]
 
 # Définir la taille de la fenêtre une seule fois en dehors de la boucle
-screen_width = (n + 1) * size
-screen_height = (m + 1) * size
+screen_width = (4 + 1) * size
+screen_height = (4 + 1) * size
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Écran d'accueil")
 
@@ -42,6 +44,32 @@ def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
 
+def generate_random_grid(m, n):
+    numbers = list(range(1, m * n + 1))
+    random.shuffle(numbers)
+    return Grid(m,n,[numbers[i:i + n] for i in range(0, len(numbers), n)])
+
+
+def generate_random_difficulty_grid(difficulty):
+    m, n = 3, 3  # Assuming you want 3x3 grids
+    if difficulty=="easy":
+        min_length, max_length = 3, 5
+    elif difficulty=="medium":
+        min_length, max_length = 6, 10
+    else:
+        min_length, max_length = 11,100
+
+
+    while True:
+        L=generate_random_grid(m, n)
+        neighbor_graph, arretes, noeuds = L.next_neighbors_new()
+        shortest_path = neighbor_graph.bfs(exemple.transform(), target_grid.transform())
+
+
+        if min_length <= len(shortest_path) <= max_length:
+            return grid
+
+
 def draw_text_rect(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     text_rect = img.get_rect(center=(x, y))
@@ -61,11 +89,16 @@ def is_swap_allowed(selected,target,swap_fb):
 
     return True
 
+def create_sorted_grid(m,n):
+    return Grid(m,n,[list(range(i *n + 1, (i + 1) * n + 1)) for i in range(m)])
 def easy_game(L, size,swap_fb):
     run = True
+    m=L.m;n=L.n
+    target_grid=create_sorted_grid(m,n)
+    neighbor_graph, arretes, noeuds = L.next_neighbors_new()
+    shortest_path = neighbor_graph.bfs(L.transform(), target_grid.transform())
+    compt_sol=len(shortest_path)
     selected = None
-    m = len(L)
-    n = len(L[0])
     compt=0
 
     while run:
@@ -87,7 +120,7 @@ def easy_game(L, size,swap_fb):
 
                     if (abs(i0 - i1) == 1 and j0 == j1) or (abs(j0 - j1) == 1 and i0 == i1):
                         if is_swap_allowed(selected,target,swap_fb):
-                            L[i0][j0], L[i1][j1] = L[i1][j1], L[i0][j0]
+                            L.swap((i0,j0), (i1,j1))
                             compt+=1
 
                     selected = None
@@ -96,19 +129,19 @@ def easy_game(L, size,swap_fb):
                 run = False
 
         screen.fill(white)
-        if is_sorted(L):
+        if L.is_sorted():
             draw_text(f"Bravo, tu as résolu le problème en",
-                      text_front, (0, 0, 0), 0, screen_height - size / 3)
+                      text_front, (0, 0, 0), 0, screen_height - size )
             draw_text(f"{compt}{' coup alors que la solution ' if compt == 1 else ' coups alors que la solution'}",
-                      text_front, (0, 0, 0), 0, screen_height - 2*size / 3)
-            draw_text(f"La solution optimale est en {compt_sol} {'coup' if compt_sol == 1 else 'coups'}", text_front,
+                      text_front, (0, 0, 0), 0, screen_height - 2 * size / 3)
+            draw_text(f"La solution optimale est en {compt_sol-1} {'coup' if compt_sol == 1 else 'coups'}", text_front,
                       (0, 0, 0), 0, screen_height - size / 3)
 
         for i in range(m):
             for j in range(n):
                 y = i * size + size // 2
                 x = j * size + size // 2
-                draw_numbered_box(L[i][j], x, y, size)
+                draw_numbered_box(L.state[i][j], x, y, size)
                 draw_line(swap_fb,size)
 
 

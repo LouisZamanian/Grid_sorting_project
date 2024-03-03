@@ -73,6 +73,9 @@ class Grid():
         texte = ligne_superieure + lignes_milieu
         print(texte)
 
+    def create_sorted_grid(self,m, n):
+        return [list(range(i * self.n + 1, (i + 1) * self.n + 1)) for i in range(self.m)]
+
     def trouver_indice_element(self,liste_de_listes, element):
         for i, sous_liste in enumerate(liste_de_listes):
             if element in sous_liste:
@@ -154,7 +157,6 @@ class Grid():
 
     def transform(self):
         return tuple(tuple(self.state[i][j] for j in range(self.n) for i in range(self.m)))
-
 
 
 
