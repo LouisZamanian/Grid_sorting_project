@@ -1,5 +1,5 @@
 import pygame
-
+from grid import Grid
 pygame.init()
 
 
@@ -8,9 +8,10 @@ pygame.init()
 white = (255, 255, 255)
 black = (0, 0, 0)
 gray = (200, 200, 200)
-L0 = [[1, 3], [2, 4]]
-L = [[1, 2, 5], [3, 4, 6], [9, 7, 8]]
-L1=[[1,16,14,12],[13,11,10,9],[5,2,8,3],[4,6,7,15]]
+#Grid(3,3, [[1,2,3],[4,5,6],[7,8,9]])
+L0 = Grid(2,2,[[1, 3], [2, 4]])
+L = Grid(3,3,[[1, 2, 5], [3, 4, 6], [9, 7, 8]])
+L1=Grid(4,4,[[1,16,14,12],[13,11,10,9],[5,2,8,3],[4,6,7,15]])
 m = len(L1)
 n = len(L1[0])
 size = 100
@@ -33,14 +34,7 @@ buttons = [
 ]
 toggle_button = {"text": "Swaps interdits", "level": "toggle_swaps", "rect": pygame.Rect(100, 400, 200, 50)}
 buttons.append(toggle_button)
-def is_sorted(L):
-    m = len(L)
-    n = len(L[0])
-    for i in range(m):
-        for j in range(n):
-            if (i < m - 1 and L[i][n - 1] > L[i + 1][0]) or (j < n - 1 and L[i][j] > L[i][j + 1]):
-                return False
-    return True
+
 
 text_front = pygame.font.SysFont("Arial", 30)
 
@@ -72,6 +66,7 @@ def easy_game(L, size,swap_fb):
     selected = None
     m = len(L)
     n = len(L[0])
+    compt=0
 
     while run:
         for event in pygame.event.get():
@@ -93,6 +88,7 @@ def easy_game(L, size,swap_fb):
                     if (abs(i0 - i1) == 1 and j0 == j1) or (abs(j0 - j1) == 1 and i0 == i1):
                         if is_swap_allowed(selected,target,swap_fb):
                             L[i0][j0], L[i1][j1] = L[i1][j1], L[i0][j0]
+                            compt+=1
 
                     selected = None
 
@@ -101,7 +97,13 @@ def easy_game(L, size,swap_fb):
 
         screen.fill(white)
         if is_sorted(L):
-            draw_text("Bravo c'est gagné !", text_front, (0, 0, 0), size / 2, size / 8)
+            draw_text(f"Bravo, tu as résolu le problème en",
+                      text_front, (0, 0, 0), 0, screen_height - size / 3)
+            draw_text(f"{compt}{' coup alors que la solution ' if compt == 1 else ' coups alors que la solution'}",
+                      text_front, (0, 0, 0), 0, screen_height - 2*size / 3)
+            draw_text(f"La solution optimale est en {compt_sol} {'coup' if compt_sol == 1 else 'coups'}", text_front,
+                      (0, 0, 0), 0, screen_height - size / 3)
+
         for i in range(m):
             for j in range(n):
                 y = i * size + size // 2
@@ -112,7 +114,8 @@ def easy_game(L, size,swap_fb):
 
         pygame.display.flip()
 
-        pygame.time.delay(10)  # Ajouter un petit délai pour réduire l'utilisation du processeur
+        pygame.time.delay(10) # Ajouter un petit délai pour réduire l'utilisation du processeur
+
 
 
 
@@ -176,10 +179,8 @@ while running:
                         swap_fb_enabled = not swap_fb_enabled
                         if swap_fb_enabled:
                             print("Swaps interdits activés")
-                            # Vous pouvez charger ou définir la liste swap_fb ici si nécessaire
                         else:
                             print("Swaps interdits désactivés")
-                            # Vous pouvez réinitialiser la liste swap_fb ici si nécessaire
                     elif button["level"] == "easy":
                         easy_game(L0, size, swap_fb if swap_fb_enabled else [])
                         print(f"Clicked {button['level']} button")
@@ -196,4 +197,3 @@ while running:
 
 # Quitter pygame proprement
 pygame.quit()
-#test
