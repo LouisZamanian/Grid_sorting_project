@@ -33,8 +33,8 @@ def generate_10_grids(nb, m, n):
         print(grid.state, len(shortest_path))
     return
 
-#print(generate_10_grids(10,2,3))
-exemple=Grid(4,4,generate_random_grid(4,4))
+print(generate_10_grids(10,3,3))
+#exemple=Grid(4,4,generate_random_grid(4,4))
 #exemple=Grid(4,4,[[1,4,2,3],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
 #exemple = Grid(3,3, [[1,5,3],[4,2,6],[9,7,8]])
 
@@ -49,7 +49,7 @@ exemple=Grid(4,4,generate_random_grid(4,4))
 
 # Grille cible
 #target_grid = Grid(4,4, [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
-target_grid=Grid(4,4,[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
+#target_grid=Grid(4,4,[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
 
 
 

@@ -4,6 +4,30 @@ import random
 pygame.init()
 
 
+def creer_matrice(n, m):
+    return [[i + j * m + 1 for i in range(m)] for j in range(n)]
+
+
+def generate_random_grid(m, n):
+    numbers = list(range(1, m * n + 1))
+    random.shuffle(numbers)
+    return [numbers[i:i + n] for i in range(0, len(numbers), n)]
+
+def generate_grids(nb_inf,nb_sup, m, n,dif):
+    target_grid = Grid(m, n, [[i + j * n + 1 for i in range(n)] for j in range(m)])
+    for i in range(10):
+        grid = Grid(m, n, generate_random_grid(m, n))
+        neighbor_graph, arretes, noeuds = grid.a_star()
+        shortest_path = neighbor_graph.bfs(grid.transform(), target_grid.transform())
+        if nb_inf<len(shortest_path)<nb_sup:
+            return grid
+    if dif=="easy":
+        return Grid(2,3,[[6, 4, 3], [2, 1, 5]])
+    elif dif=="medium":
+        return Grid(3,3,[[1, 6, 2], [5, 8, 3], [4, 7, 9]])
+    else:
+        return Grid(3,3,[[2, 9, 7], [5, 8, 4], [6, 3, 1]])
+
 
 # Définir les couleurs
 white = (255, 255, 255)
@@ -44,30 +68,13 @@ def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
 
-def generate_random_grid(m, n):
-    numbers = list(range(1, m * n + 1))
-    random.shuffle(numbers)
-    return Grid(m,n,[numbers[i:i + n] for i in range(0, len(numbers), n)])
 
 
-def generate_random_difficulty_grid(difficulty):
-    m, n = 3, 3  # Assuming you want 3x3 grids
-    if difficulty=="easy":
-        min_length, max_length = 3, 5
-    elif difficulty=="medium":
-        min_length, max_length = 6, 10
-    else:
-        min_length, max_length = 11,100
 
 
-    while True:
-        L=generate_random_grid(m, n)
-        neighbor_graph, arretes, noeuds = L.a_star()
-        shortest_path = neighbor_graph.bfs(exemple.transform(), target_grid.transform())
 
 
-        if min_length <= len(shortest_path) <= max_length:
-            return grid
+
 
 
 def draw_text_rect(text, font, text_col, x, y):
@@ -215,12 +222,15 @@ while running:
                         else:
                             print("Swaps interdits désactivés")
                     elif button["level"] == "easy":
+                        L0=generate_grids(3,5, 2, 3,"easy")
                         easy_game(L0, size, swap_fb if swap_fb_enabled else [])
                         print(f"Clicked {button['level']} button")
                     elif button["level"] == "medium":
+                        L=generate_grids(6,10, 3, 3,"medium")
                         easy_game(L, size, swap_fb if swap_fb_enabled else [])
                         print(f"Clicked {button['level']} button")
                     elif button["level"] == "hard":
+                        L1=generate_grids(11,20, 3, 3,"hard")
                         easy_game(L1, size, swap_fb if swap_fb_enabled else [])
                         print(f"Clicked {button['level']} button")
 
