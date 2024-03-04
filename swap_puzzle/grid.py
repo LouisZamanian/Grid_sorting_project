@@ -7,6 +7,7 @@ from graph import Graph
 from collections import deque
 import copy
 import matplotlib.pyplot as plt
+import heapq
 import sys
 class Grid():
     """
@@ -41,6 +42,12 @@ class Grid():
         if not initial_state:
             initial_state = [list(range(i*n+1, (i+1)*n+1)) for i in range(m)]            
         self.state = initial_state
+
+    def __lt__(self, other):
+        # Implement the custom comparison logic here
+        # You can compare based on some criteria to determine the order
+        # For example, you might compare the heuristic values if it makes sense
+        return self.heuristique() < other.heuristique()
 
     def __str__(self): 
         """
@@ -380,7 +387,7 @@ class Grid():
                     L[i],L[j]=L[j],L[i]
         return L
 
-    def a_star(self):
+    def a_star_new(self):
         g = Graph()
         queue = deque([self])
         visited = {self.transform()}  # Utilisation d'un ensemble pour stocker les états visités
@@ -422,55 +429,47 @@ class Grid():
 
         return g, g.nb_edges, g.nb_nodes
 
-    def a_star_new(self):
+    def a_star(self):
         g = Graph()
-        queue = deque([self])
-        visited = {self.transform()}  # Utilisation d'un ensemble pour stocker les états visités
+        queue = [(0, self)]  # Priority queue with tuple (heuristic, grid)
+        visited = {self.transform(): 0}  # Dictionary to store the minimum cost to reach each state
 
         while queue:
-            current_grid = queue.popleft()
-            dis=current_grid.heuristique()
+            _, current_grid = heapq.heappop(queue)
 
-            for i in range(self.n):
-                for j in range(self.m - 1):
+            for i in range(self.m):
+                for j in range(self.n - 1):
                     neighbor_grid = copy.deepcopy(current_grid)
                     neighbor_grid.swap((i, j), (i, j + 1))
                     neighbor_transform = neighbor_grid.transform()
 
-                    if neighbor_transform not in visited:
-                        visited.add(neighbor_transform)
-                        queue.append(neighbor_grid)
-                        if neighbor_grid.heuristique()<dis:
-                            break
-                        queue=current_grid.sort(queue)
+                    cost = visited[current_grid.transform()] + 1
 
-                    g.add_edge(current_grid.transform(), neighbor_transform)
+                    if neighbor_transform not in visited or cost < visited[neighbor_transform]:
+                        visited[neighbor_transform] = cost
+                        heapq.heappush(queue, (cost + neighbor_grid.heuristique(), neighbor_grid))
+                        g.add_edge(current_grid.transform(), neighbor_transform)
 
                     if neighbor_grid.is_sorted():
                         return g, g.nb_edges, g.nb_nodes
 
-            for i in range(self.n - 1):
-                for j in range(self.m):
+            for i in range(self.m - 1):
+                for j in range(self.n):
                     neighbor_grid = copy.deepcopy(current_grid)
                     neighbor_grid.swap((i, j), (i + 1, j))
                     neighbor_transform = neighbor_grid.transform()
 
-                    if neighbor_transform not in visited:
-                        visited.add(neighbor_transform)
-                        queue.append(neighbor_grid)
-                        queue=current_grid.sort(queue)
+                    cost = visited[current_grid.transform()] + 1
 
-                    g.add_edge(current_grid.transform(), neighbor_transform)
+                    if neighbor_transform not in visited or cost < visited[neighbor_transform]:
+                        visited[neighbor_transform] = cost
+                        heapq.heappush(queue, (cost + neighbor_grid.heuristique(), neighbor_grid))
+                        g.add_edge(current_grid.transform(), neighbor_transform)
 
                     if neighbor_grid.is_sorted():
                         return g, g.nb_edges, g.nb_nodes
 
         return g, g.nb_edges, g.nb_nodes
-            
-    
-
-        
-
 
 
 
