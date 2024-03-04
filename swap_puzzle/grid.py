@@ -95,8 +95,8 @@ class Grid():
                     return False
         return True
 
-    def creer_matrice(self,n,m):
-        return [[i+j*self.m+1 for i in range(self.m)]for j in range(self.n)]
+    def creer_matrice(self,m,n):
+        return [[i+j*self.n+1 for i in range(self.n)]for j in range(self.m)]
 
     def swap(self, cell1, cell2):
         """
@@ -170,8 +170,8 @@ class Grid():
         while queue:
             current_grid = queue.popleft()
 
-            for i in range(self.n):
-                for j in range(self.m - 1):
+            for i in range(self.m):
+                for j in range(self.n - 1):
                     # Créer une copie de la grille actuelle pour éviter de la modifier directement
                     new_grid =copy.deepcopy(current_grid)
                     # Échanger les éléments adjacents sur la ligne
@@ -185,8 +185,8 @@ class Grid():
                         queue.append(new_grid)
                         g.add_edge(current_grid.transform(), new_grid_transform)
 
-            for i in range(self.n - 1):
-                for j in range(self.m):
+            for i in range(self.m - 1):
+                for j in range(self.n):
                     # Créer une copie de la grille actuelle
                     new_grid =copy.deepcopy(current_grid)
                     # Échanger les éléments adjacents sur la colonne
@@ -303,8 +303,8 @@ class Grid():
         while queue:
             current_grid = queue.popleft()
 
-            for i in range(self.n):
-                for j in range(self.m - 1):
+            for i in range(self.m):
+                for j in range(self.n - 1):
                     neighbor_grid = copy.deepcopy(current_grid)
                     neighbor_grid.swap((i, j), (i, j + 1))
                     neighbor_transform = neighbor_grid.transform()
@@ -318,8 +318,8 @@ class Grid():
                     if neighbor_grid.is_sorted():
                         return g, g.nb_edges, g.nb_nodes
 
-            for i in range(self.n - 1):
-                for j in range(self.m):
+            for i in range(self.m - 1):
+                for j in range(self.n):
                     neighbor_grid = copy.deepcopy(current_grid)
                     neighbor_grid.swap((i, j), (i + 1, j))
                     neighbor_transform = neighbor_grid.transform()
@@ -388,8 +388,8 @@ class Grid():
         while queue:
             current_grid = queue.popleft()
 
-            for i in range(self.n):
-                for j in range(self.m - 1):
+            for i in range(self.m):
+                for j in range(self.n - 1):
                     neighbor_grid = copy.deepcopy(current_grid)
                     neighbor_grid.swap((i, j), (i, j + 1))
                     neighbor_transform = neighbor_grid.transform()
@@ -404,8 +404,8 @@ class Grid():
                     if neighbor_grid.is_sorted():
                         return g, g.nb_edges, g.nb_nodes
 
-            for i in range(self.n - 1):
-                for j in range(self.m):
+            for i in range(self.m - 1):
+                for j in range(self.n):
                     neighbor_grid = copy.deepcopy(current_grid)
                     neighbor_grid.swap((i, j), (i + 1, j))
                     neighbor_transform = neighbor_grid.transform()
