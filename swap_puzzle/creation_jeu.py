@@ -62,7 +62,7 @@ def generate_random_difficulty_grid(difficulty):
 
     while True:
         L=generate_random_grid(m, n)
-        neighbor_graph, arretes, noeuds = L.next_neighbors_new()
+        neighbor_graph, arretes, noeuds = L.a_star()
         shortest_path = neighbor_graph.bfs(exemple.transform(), target_grid.transform())
 
 
