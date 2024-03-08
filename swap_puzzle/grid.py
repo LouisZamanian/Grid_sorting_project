@@ -9,6 +9,14 @@ import copy
 import matplotlib.pyplot as plt
 import heapq
 import sys
+
+
+def sort(L):
+    for i in range(len(L)):
+        for j in range(i + 1, len(L)):
+            if L[i].manhattan_distance() > L[j].manhattan_distance():
+                L[i], L[j] = L[j], L[i]
+    return L
 class Grid():
     """
     A class representing the grid from the swap puzzle. It supports rectangular grids. 
@@ -43,11 +51,7 @@ class Grid():
             initial_state = [list(range(i*n+1, (i+1)*n+1)) for i in range(m)]            
         self.state = initial_state
 
-    def __lt__(self, other):
-        # Implement the custom comparison logic here
-        # You can compare based on some criteria to determine the order
-        # For example, you might compare the heuristic values if it makes sense
-        return self.heuristique() < other.heuristique()
+
 
     def __str__(self): 
         """
@@ -372,22 +376,21 @@ class Grid():
         return distance
 
     def heuristique(self):
-        s=0
-        L=self.creer_matrice(self.m,self.n)
+        s = 0
+        L = self.creer_matrice(self.m, self.n)
+
         for i in range(self.m):
             for j in range(self.n):
-                s+= abs(self.state[i][j]-L[i][j])
+                if self.state[i][j] != 0:  # Ignorer la case vide s'il y en a une
+                    target_row, target_col = divmod(self.state[i][j] - 1, self.n)
+                    s += abs(i - target_row) + abs(j - target_col)
+
         return s
 
 
-    def sort(self,L):
-        for i in range(len(L)):
-            for j in range(i+1,len(L)):
-                if L[i].manhattan_distance()>L[j].manhattan_distance():
-                    L[i],L[j]=L[j],L[i]
-        return L
 
-    def a_star_new(self):
+
+    def a_star(self):
         g = Graph()
         queue = deque([self])
         visited = {self.transform()}  # Utilisation d'un ensemble pour stocker les états visités
@@ -404,7 +407,7 @@ class Grid():
                     if neighbor_transform not in visited:
                         visited.add(neighbor_transform)
                         queue.append(neighbor_grid)
-                        queue=current_grid.sort(queue)
+                        sort(queue)
 
                     g.add_edge(current_grid.transform(), neighbor_transform)
 
@@ -420,7 +423,7 @@ class Grid():
                     if neighbor_transform not in visited:
                         visited.add(neighbor_transform)
                         queue.append(neighbor_grid)
-                        queue=current_grid.sort(queue)
+                        sort(queue)
 
                     g.add_edge(current_grid.transform(), neighbor_transform)
 
@@ -429,7 +432,127 @@ class Grid():
 
         return g, g.nb_edges, g.nb_nodes
 
-    def a_star(self):
+    def a_star_new_new(self):
+        g = Graph()
+        queue = deque([self])  # Initialiser une deque avec un élément
+        visited = {self.transform()}  # Utilisation d'un ensemble pour stocker les états visités
+
+        while queue:
+            current_grid = queue.popleft()  # Utiliser popleft sur une deque
+
+            for i in range(self.m):
+                for j in range(self.n):
+                    if i < self.m - 1:
+                        neighbor_grid_1 = copy.deepcopy(current_grid)
+                        neighbor_grid_1.swap((i, j), (i + 1, j))
+                        neighbor_transform_1 = neighbor_grid_1.transform()
+
+                        if neighbor_transform_1 not in visited:
+                            visited.add(neighbor_transform_1)
+                            queue.append(neighbor_grid_1)
+                            queue = deque(sorted(queue, key=lambda x: x.heuristique()))
+                        g.add_edge(current_grid.transform(), neighbor_transform_1)
+
+                        if neighbor_grid_1.is_sorted():
+                            return g, g.nb_edges, g.nb_nodes
+
+                    if j < self.n - 1:
+                        neighbor_grid_2 = copy.deepcopy(current_grid)
+                        neighbor_grid_2.swap((i, j), (i, j + 1))
+                        neighbor_transform_2 = neighbor_grid_2.transform()
+
+                        if neighbor_transform_2 not in visited:
+                            visited.add(neighbor_transform_2)
+                            queue.append(neighbor_grid_2)
+                            queue = deque(sorted(queue, key=lambda x: x.heuristique()))
+                        g.add_edge(current_grid.transform(), neighbor_transform_2)
+
+                        if neighbor_grid_2.is_sorted():
+                            return g, g.nb_edges, g.nb_nodes
+
+        return g, g.nb_edges, g.nb_nodes
+
+    def a_star_new(self):
+        g = Graph()
+        queue = deque([self])
+        visited = {self.transform()}  # Utilisation d'un ensemble pour stocker les états visités
+
+        while queue:
+            current_grid = queue.popleft()
+            #dist=current_grid.heuristique()
+            #for i in range(self.m-1):
+                #for j in range(self.n - 1):
+                  #  neighbor_grid_1 = copy.deepcopy(current_grid)
+                  #  neighbor_grid_2 = copy.deepcopy(current_grid)
+                  #  neighbor_grid_1.swap((i, j), (i, j + 1))
+                   # neighbor_transform_1 = neighbor_grid_1.transform()
+
+                  #  neighbor_grid_2.swap((i, j), (i + 1, j))
+                  #  neighbor_transform_2 = neighbor_grid_2.transform()
+                    #dist_new=neighbor_grid.heuristique()
+
+                   # if neighbor_transform_1 not in visited:
+                     #   visited.add(neighbor_transform_1)
+                       # queue.append(neighbor_grid_1)
+                     #   queue=current_grid.sort(queue)
+                      #  g.add_edge(current_grid.transform(), neighbor_transform_1)
+                   # if neighbor_transform_2 not in visited:
+                    #    visited.add(neighbor_transform_2)
+                     #   queue.append(neighbor_grid_2)
+                      #  queue=current_grid.sort(queue)
+                      #  g.add_edge(current_grid.transform(), neighbor_transform_2)
+
+                  #  if neighbor_grid_1.is_sorted() or neighbor_grid_2.is_sorted():
+                    #    return g, g.nb_edges, g.nb_nodes
+
+
+           # for i in range(self.m - 1):
+              #  for j in range(self.n):
+                   # neighbor_grid = copy.deepcopy(current_grid)
+                   # neighbor_grid.swap((i, j), (i + 1, j))
+                    #neighbor_transform = neighbor_grid.transform()
+                    #dist_new = neighbor_grid.heuristique()
+
+                  #  if neighbor_transform not in visited:
+                    #    visited.add(neighbor_transform)
+                     #   queue.append(neighbor_grid)
+                     #   queue=current_grid.sort(queue)
+                     #   g.add_edge(current_grid.transform(), neighbor_transform)
+
+                   # if neighbor_grid.is_sorted():
+                     #   return g, g.nb_edges, g.nb_nodes
+            for i in range(self.m):
+                for j in range(self.n):
+                    if i < self.m - 1:
+                        neighbor_grid_1 = copy.deepcopy(current_grid)
+                        neighbor_grid_1.swap((i, j), (i + 1, j))
+                        neighbor_transform_1 = neighbor_grid_1.transform()
+
+                        if neighbor_transform_1 not in visited:
+                            visited.add(neighbor_transform_1)
+                            queue.append(neighbor_grid_1)
+                            sort(queue)
+                            g.add_edge(current_grid.transform(), neighbor_transform_1)
+
+                        if neighbor_grid_1.is_sorted():
+                            return g, g.nb_edges, g.nb_nodes
+                    if j < self.n - 1:
+                        neighbor_grid_2 = copy.deepcopy(current_grid)
+                        neighbor_grid_2.swap((i, j), (i, j + 1))
+                        neighbor_transform_2 = neighbor_grid_2.transform()
+
+                        if neighbor_transform_2 not in visited:
+                            visited.add(neighbor_transform_2)
+                            queue.append(neighbor_grid_2)
+                            sort(queue)
+                            g.add_edge(current_grid.transform(), neighbor_transform_2)
+
+                        if neighbor_grid_2.is_sorted():
+                            return g, g.nb_edges, g.nb_nodes
+
+        return g, g.nb_edges, g.nb_nodes
+
+    def a_star_avec_heapq(self):
         g = Graph()
         queue = [(0, self)]  # Priority queue with tuple (heuristic, grid)
         visited = {self.transform(): 0}  # Dictionary to store the minimum cost to reach each state

@@ -13,7 +13,7 @@ file_name = data_path + "grid0.in"
 #g = Grid.grid_from_file(file_name)
 #print(g)
 exemple=Grid(4,4,[[1,16,14,12],[13,11,10,9],[5,2,8,3],[4,6,7,15]])
-#exemple=Grid(3,3,[[1,3,4],[2,6,5],[9,8,7]])
+exemple=Grid(3,3,[[1,3,4],[2,6,5],[9,8,7]])
 
 def creer_matrice(n, m):
     return [[i + j * m + 1 for i in range(m)] for j in range(n)]
@@ -38,7 +38,7 @@ def generate_10_grids(nb, m, n):
 #exemple=Grid(4,4,generate_random_grid(4,4))
 #exemple=Grid(4,4,[[1,4,2,3],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
 #exemple = Grid(3,3, [[1,5,3],[4,2,6],[9,7,8]])
-exemple=generate_random_grid(4,4)
+exemple=generate_random_grid(3,3)
 print(exemple)
 #exp=Grid(2,2,[[1,2],[3,4]])
 
@@ -50,8 +50,8 @@ print(exemple)
 
 # Grille cible
 #target_grid = Grid(4,4, [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
-target_grid=Grid(4,4,[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
-#target_grid=Grid(3,3,[[1,2,3],[4,5,6],[7,8,9]])
+#target_grid=Grid(4,4,[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
+target_grid=Grid(3,3,[[1,2,3],[4,5,6],[7,8,9]])
 
 
 # Create the neighbor graph
