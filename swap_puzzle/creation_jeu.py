@@ -44,8 +44,8 @@ size = 100
 swap_fb=[[(1,1),(1,2)]]
 
 # Définir la taille de la fenêtre une seule fois en dehors de la boucle
-screen_width = (4 + 1) * size
-screen_height = (4 + 1) * size
+screen_width = (5 + 1) * size
+screen_height = (5 + 1) * size
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Écran d'accueil")
 
@@ -102,7 +102,7 @@ def easy_game(L, size,swap_fb):
     run = True
     m=L.m;n=L.n
     target_grid=create_sorted_grid(m,n)
-    neighbor_graph, arretes, noeuds = L.next_neighbors_new()
+    neighbor_graph, arretes, noeuds = L.a_star_final_heapq()
     shortest_path = neighbor_graph.bfs(L.transform(), target_grid.transform())
     compt_sol=len(shortest_path)
     selected = None
@@ -230,7 +230,7 @@ while running:
                         easy_game(L, size, swap_fb if swap_fb_enabled else [])
                         print(f"Clicked {button['level']} button")
                     elif button["level"] == "hard":
-                        L1=generate_grids(11,20, 3, 3,"hard")
+                        L1=generate_grids(11,100, 4, 4,"hard")
                         easy_game(L1, size, swap_fb if swap_fb_enabled else [])
                         print(f"Clicked {button['level']} button")
 
