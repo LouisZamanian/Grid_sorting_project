@@ -13,6 +13,7 @@ def generate_random_grid(m, n):
     random.shuffle(numbers)
     return [numbers[i:i + n] for i in range(0, len(numbers), n)]
 
+#Création de grilles aléatoires selon le niveau
 def generate_grids(nb_inf,nb_sup, m, n,dif):
     target_grid = Grid(m, n, [[i + j * n + 1 for i in range(n)] for j in range(m)])
     for i in range(10):
@@ -29,22 +30,13 @@ def generate_grids(nb_inf,nb_sup, m, n,dif):
         return Grid(3,3,[[2, 9, 7], [5, 8, 4], [6, 3, 1]])
 
 
-# Définir les couleurs
+# Définissions des couleurs
 white = (255, 255, 255)
 black = (0, 0, 0)
 gray = (200, 200, 200)
-#Grid(3,3, [[1,2,3],[4,5,6],[7,8,9]])
-L0 = Grid(2,2,[[1, 3], [2, 4]])
-L = Grid(3,3,[[1, 2, 5], [3, 4, 6], [9, 7, 8]])
-L1=Grid(4,4,[[1,16,14,12],[13,11,10,9],[5,2,8,3],[4,6,7,15]])
-#m0, n0 = L0.m, L0.n
-#m, n = L.m, L.n
-#m1, n1 = L1.m, L1.n
 size = 100
 
-#creation swap interdits
-
-
+#Creation swap interdits
 def swap_fb(m, n, level):
     swap_fb = []
 
@@ -58,17 +50,16 @@ def swap_fb(m, n, level):
     return swap_fb
 
 
-
-# Définir la taille de la fenêtre une seule fois en dehors de la boucle
+# Définition de la taille de la fenêtre
 screen_width = (5 + 1) * size
 screen_height = (5 + 1) * size
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Écran d'accueil")
 
-# Définir la police de texte
+# Définition la police de texte
 font = pygame.font.SysFont("Arial", 30)
 
-# Définir les boutons
+# Création des boutons
 buttons = [
     {"text": "Easy", "level": "easy", "rect": pygame.Rect(100, 100, 200, 50)},
     {"text": "Medium", "level": "medium", "rect": pygame.Rect(100, 200, 200, 50)},
@@ -95,17 +86,18 @@ def draw_numbered_box(number, x, y, size):
     draw_text_rect(str(number), font, black, x + size // 2, y + size // 2)
 
 def is_swap_allowed(selected,target,swap_fb):
-    # Ajouter des conditions pour interdire le swap entre certaines cases
     for elt in swap_fb:
         if (selected == elt[0] and target == elt[1]) or (selected == elt[1] and target == elt[0]) :
             return False
-    # Ajouter d'autres conditions selon vos besoins
 
     return True
 
+#Création de la grille triée
 def create_sorted_grid(m,n):
     return Grid(m,n,[list(range(i *n + 1, (i + 1) * n + 1)) for i in range(m)])
-def easy_game(L, size,swap_fb):
+
+#Création du jeu
+def game(L, size,swap_fb):
     run = True
     m=L.m;n=L.n
     target_grid=create_sorted_grid(m,n)
@@ -165,7 +157,7 @@ def easy_game(L, size,swap_fb):
 
 
 
-
+#Création du cadrillage
 def draw_line(swap_fb,size):
     for elt in swap_fb:
         i1=elt[0][0];j1=elt[0][1]
@@ -175,13 +167,11 @@ def draw_line(swap_fb,size):
         y2 = i2 * size + size // 2
         x2 = j2 * size + size // 2
         if elt[0][0]==elt[1][0]:
-            #xi=size*0.5+0.5*(elt[0][0]+elt[1][0]+2)*size;yi=size+(elt[0][1]+elt[1][1])*0.5*size
             xi=(x1+x2)*0.5+size*0.5;yi=(y1+y2)*0.5
             xf=xi;yf=yi+size
             print("barre verticale",xi,yi)
             pygame.draw.line(screen,"red",(xi,yi),(xf,yf),5)
         elif elt[0][1]==elt[1][1]:
-            #xi = size // 2 + (elt[0][0] + elt[1][0]) / 2 * size;yi = size + (elt[0][1] + elt[1][1]) / 2 * size
             xi = (x1 + x2) * 0.5 ;yi = (y1 + y2) * 0.5+ size * 0.5
             xf =xi+size ;yf = yi
             pygame.draw.line(screen, "red", (xi, yi), (xf, yf), 5)
@@ -212,7 +202,7 @@ def draw_buttons(screen_width, screen_height, swap_fb_enabled):
         screen.blit(text_surface, text_rect)
 
 
-swap_fb_enabled = False  # Initialisation des swaps interdits à désactivés
+swap_fb_enabled = False  # Initialisation des swaps interdits  désactivés
 running=True
 
 while running:
@@ -231,17 +221,17 @@ while running:
                     elif button["level"] == "easy":
                         swp_fb=swap_fb(2,3,"easy")
                         L0=generate_grids(3,5, 2, 3,"easy")
-                        easy_game(L0, size, swp_fb if swap_fb_enabled else [])
+                        game(L0, size, swp_fb if swap_fb_enabled else [])
                         print(f"Clicked {button['level']} button")
                     elif button["level"] == "medium":
                         swp_fb = swap_fb(3, 3, "medium")
                         L=generate_grids(6,10, 3, 3,"medium")
-                        easy_game(L, size, swp_fb if swap_fb_enabled else [])
+                        game(L, size, swp_fb if swap_fb_enabled else [])
                         print(f"Clicked {button['level']} button")
                     elif button["level"] == "hard":
                         swp_fb = swap_fb(4, 4, "hard")
                         L1=generate_grids(11,100, 4, 4,"hard")
-                        easy_game(L1, size, swp_fb if swap_fb_enabled else [])
+                        game(L1, size, swp_fb if swap_fb_enabled else [])
                         print(f"Clicked {button['level']} button")
 
     screen.fill(white)
