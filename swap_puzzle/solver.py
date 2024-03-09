@@ -1,7 +1,6 @@
 from grid import Grid
 
 
-
 class Solver(Grid):
     def __init__(self, n, m, initial_state=None):
         super().__init__(n, m, initial_state)
@@ -12,7 +11,7 @@ class Solver(Grid):
         return [[i+j*self.m+1 for i in range(self.m)]for j in range(self.n)]
 
 
-
+#Solution naïve
     def get_solution(self):
         swp = []
         nb = 0

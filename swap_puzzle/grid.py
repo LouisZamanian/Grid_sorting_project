@@ -11,6 +11,7 @@ import heapq
 import sys
 
 
+#sort utilisé dans l'algorithme a_star lorsque l'on n'utilise pas le module heapq
 def sort(L):
     elt=L[-1]
     dist=elt.manhattan_distance()
@@ -66,7 +67,6 @@ class Grid():
         return output
 
     def __lt__(self, other):
-        # Implémentez la logique de comparaison nécessaire
         return self.heuristique() < other.heuristique()
     def __repr__(self): 
         """
@@ -74,6 +74,7 @@ class Grid():
         """
         return f"<grid.Grid: m={self.m}, n={self.n}>"
 
+#représentation graphique dans la console python
     def representation(self):
         ligne_superieure = "+-------" * (self.n) + "+\n"
 
@@ -100,7 +101,7 @@ class Grid():
                 return [i, j]  # Retourne le tuple (indice_de_liste, indice_d'élément)
         return None
 
-
+#question n°2:
     def is_sorted(self):
         """
         Checks if the current state of the grid is sorte and returns the answer as a boolean.
@@ -116,49 +117,15 @@ class Grid():
         return [[i+j*self.n+1 for i in range(self.n)]for j in range(self.m)]
 
     def swap(self, cell1, cell2):
-        """
-        Implements the swap operation between two cells. Raises an exception if the swap is not allowed.
-
-        Parameters: 
-        -----------
-        cell1, cell2: tuple[int]
-            The two cells to swap. They must be in the format (i, j) where i is the line and j the column number of the cell. 
-        """
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
         i1,j1=cell1
         i2,j2=cell2
         self.state[i1][j1], self.state[i2][j2] = self.state[i2][j2], self.state[i1][j1]
 
     def swap_seq(self, cell_pair_list):
-        """
-        Executes a sequence of swaps. 
-
-        Parameters: 
-        -----------
-        cell_pair_list: list[tuple[tuple[int]]]
-            List of swaps, each swap being a tuple of two cells (each cell being a tuple of integers). 
-            So the format should be [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
-        """
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
         for cell1, cell2 in cell_pair_list:
             self.swap(cell1, cell2)
     @classmethod
-    def grid_from_file(cls, file_name): 
-        """
-        Creates a grid object from class Grid, initialized with the information from the file file_name.
-        
-        Parameters: 
-        -----------
-        file_name: str
-            Name of the file to load. The file must be of the format: 
-            - first line contains "m n" 
-            - next m lines contain n integers that represent the state of the corresponding cell
-
-        Output: 
-        -------
-        grid: Grid
-            The grid
-        """
+    def grid_from_file(cls, file_name):
         with open(file_name, "r") as file:
             m, n = map(int, file.readline().split())
             initial_state = [[] for i_line in range(m)]
@@ -170,15 +137,31 @@ class Grid():
             grid = Grid(m, n, initial_state)
         return grid
 
+        # Question n°4
+    def representation(self):
+        fig, ax = plt.subplots()
+        ax.set_xlim(0, self.n)  # on créer les axes verticaux et horizontaux à la bonne taille
+        ax.set_ylim(0, self.m)
+
+        ax.set_xticks(range(self.m + 1))
+        ax.set_yticks(range(self.n))
+        ax.set_xticklabels([])  # on supprime les graduations pour ne garder que la grille
+        ax.set_yticklabels([])
+        ax.grid(True, which='major', linestyle='-', linewidth=2, color='black')  # on trace le cadrillage
+        for i in range(self.m):
+            for j in range(self.n):
+                ax.text(j + 0.5, self.m - i - 0.5, str(self.state[i][j]), fontsize=12)  # on remplit la grille
+        plt.show()
 
 
+#Question n°6:
+#transformation des sommets (matrices) en objets hashable
     def transform(self):
         return tuple(tuple(self.state[i][j] for j in range(self.n) for i in range(self.m)))
 
 
-
-
-
+#Question n°7:
+    #Création du graphe entier, le plus grand possible
     def generate_all_grid_states(self):
         g=Graph()
         queue = deque([self])
@@ -219,99 +202,8 @@ class Grid():
         return visited,len(visited)
 
 
-    def representation(self):
-        fig, ax = plt.subplots()
-        ax.set_xlim(0, self.n)  #on créer les axes verticaux et horizontaux à la bonne taille
-        ax.set_ylim(0, self.m)
 
-        ax.set_xticks(range(self.m+1))
-        ax.set_yticks(range(self.n))
-        ax.set_xticklabels([]) #on supprime les graduations pour ne garder que la grille
-        ax.set_yticklabels([])
-        ax.grid(True, which='major', linestyle='-', linewidth=2, color='black') #on trace le cadrillage
-        for i in range(self.m):
-            for j in range(self.n):
-                ax.text(j+0.5,self.m-i-0.5, str(self.state[i][j]), fontsize=12) #on remplit la grille 
-        plt.show()
-
-
-
-
-
-
- #   def next_neighbors(self):
-  #      g = Graph()
-   #     compt=0
-    #    queue = deque([Grid(self.m, self.n, self.state)])
-     #   cond=False
-      #  arretes=0
-       # noeuds=1
-  # Ajoutez la grille initiale à la file d'attente
-        
-        #while cond==False:
-         #   compt+=1
-          #  print(compt)
-           # current_grid=queue.popleft()
-            
-            # Parcourir les lignes
-            
-            #for i in range(self.n):
-             #   for j in range(self.m - 1):
-                    # Créer une copie de la grille actuelle pour éviter de la modifier directement
-              #      neighbor_grid = copy.deepcopy(current_grid)
-
-                    # Échanger les éléments adjacents sur la ligne
-               #     neighbor_grid.swap((i, j), (i, j + 1))
-
-                     # Ajouter une arête au graphe
-                #    if neighbor_grid.transform() in g.nodes or neighbor_grid.transform() in g.edges:
-                 #       noeuds+=1
-                  #  g.add_edge(current_grid.transform(),neighbor_grid.transform())
-                   # arretes+=1
-
-
-                    #if neighbor_grid.is_sorted():
-                     #   cond=True
-                      #  break
-                
-                    #else:
-                    # Ajouter la nouvelle grille à la file d'attente
-                     #   queue.append(neighbor_grid)
-                #if cond==True:
-                 #   break
-
-
-
-
-            # Parcourir les colonnes
-            #if cond==False:
-             #   for i in range(self.n - 1):
-              #      for j in range(self.m):
-                    # Créer une copie de la grille actuelle
-               #         neighbor_grid = copy.deepcopy(current_grid)
-
-                    # Échanger les éléments adjacents sur la colonne
-                #        neighbor_grid.swap((i, j), (i + 1, j))
-
-                     # Ajouter une arête au graphe
-                 #       if neighbor_grid.transform() in g.nodes or neighbor_grid.transform() in g.edges:
-                  #          noeuds+=1   
-                   #     g.add_edge(current_grid.transform(),neighbor_grid.transform())
-                    #    arretes+=1
-
-                     #   if neighbor_grid.is_sorted():
-                      #      cond=True
-                       #     break
-                
-                        #else:
-                    # Ajouter la nouvelle grille à la file d'attente
-                         #   queue.append(neighbor_grid)
-                #if cond==True:
-                 #   break
-                    
-       # return g,arretes,noeuds
-
-
+#Question n°8:
     def next_neighbors_new(self):
         g = Graph()
         queue = deque([self])
@@ -352,6 +244,8 @@ class Grid():
 
         return g, g.nb_edges, g.nb_nodes
 
+
+#Séance 3 : Question n°1:
     def distance(self):
         compt=0
         M=self.creer_matrice(self.m,self.n)
@@ -361,7 +255,6 @@ class Grid():
                     compt+=1
         return compt
 
-                
 
     def heuristique_old(self):
         compt=0
@@ -392,91 +285,6 @@ class Grid():
                     s += abs(i - target_row) + abs(j - target_col)
 
         return s
-
-
-
-
-    def a_star(self):
-        g = Graph()
-        queue = deque([self])
-        visited = {self.transform()}  # Utilisation d'un ensemble pour stocker les états visités
-
-        while queue:
-            current_grid = queue.popleft()
-
-            for i in range(self.m):
-                for j in range(self.n - 1):
-                    neighbor_grid = copy.deepcopy(current_grid)
-                    neighbor_grid.swap((i, j), (i, j + 1))
-                    neighbor_transform = neighbor_grid.transform()
-
-                    if neighbor_transform not in visited:
-                        visited.add(neighbor_transform)
-                        queue.append(neighbor_grid)
-                        sort(queue)
-
-                    g.add_edge(current_grid.transform(), neighbor_transform)
-
-                    if neighbor_grid.is_sorted():
-                        return g, g.nb_edges, g.nb_nodes
-
-            for i in range(self.m - 1):
-                for j in range(self.n):
-                    neighbor_grid = copy.deepcopy(current_grid)
-                    neighbor_grid.swap((i, j), (i + 1, j))
-                    neighbor_transform = neighbor_grid.transform()
-
-                    if neighbor_transform not in visited:
-                        visited.add(neighbor_transform)
-                        queue.append(neighbor_grid)
-                        sort(queue)
-
-                    g.add_edge(current_grid.transform(), neighbor_transform)
-
-                    if neighbor_grid.is_sorted():
-                        return g, g.nb_edges, g.nb_nodes
-
-        return g, g.nb_edges, g.nb_nodes
-
-    def a_star_new_new(self):
-        g = Graph()
-        queue = deque([self])  # Initialiser une deque avec un élément
-        visited = {self.transform()}  # Utilisation d'un ensemble pour stocker les états visités
-
-        while queue:
-            current_grid = queue.popleft()  # Utiliser popleft sur une deque
-
-            for i in range(self.m):
-                for j in range(self.n):
-                    if i < self.m - 1:
-                        neighbor_grid_1 = copy.deepcopy(current_grid)
-                        neighbor_grid_1.swap((i, j), (i + 1, j))
-                        neighbor_transform_1 = neighbor_grid_1.transform()
-
-                        if neighbor_transform_1 not in visited:
-                            visited.add(neighbor_transform_1)
-                            queue.append(neighbor_grid_1)
-                            queue = deque(sorted(queue, key=lambda x: x.heuristique()))
-                        g.add_edge(current_grid.transform(), neighbor_transform_1)
-
-                        if neighbor_grid_1.is_sorted():
-                            return g, g.nb_edges, g.nb_nodes
-
-                    if j < self.n - 1:
-                        neighbor_grid_2 = copy.deepcopy(current_grid)
-                        neighbor_grid_2.swap((i, j), (i, j + 1))
-                        neighbor_transform_2 = neighbor_grid_2.transform()
-
-                        if neighbor_transform_2 not in visited:
-                            visited.add(neighbor_transform_2)
-                            queue.append(neighbor_grid_2)
-                            queue = deque(sorted(queue, key=lambda x: x.heuristique()))
-                        g.add_edge(current_grid.transform(), neighbor_transform_2)
-
-                        if neighbor_grid_2.is_sorted():
-                            return g, g.nb_edges, g.nb_nodes
-
-        return g, g.nb_edges, g.nb_nodes
 
 
     def a_star_final(self):

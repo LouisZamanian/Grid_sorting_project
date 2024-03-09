@@ -41,7 +41,23 @@ L1=Grid(4,4,[[1,16,14,12],[13,11,10,9],[5,2,8,3],[4,6,7,15]])
 #m, n = L.m, L.n
 #m1, n1 = L1.m, L1.n
 size = 100
-swap_fb=[[(1,1),(1,2)]]
+
+#creation swap interdits
+
+
+def swap_fb(m, n, level):
+    swap_fb = []
+
+    if level == "easy":
+        swap_fb = [[(1, 1), (1, 2)]]
+    elif level == "medium":
+        swap_fb = [[(1, 1), (1, 2)]]
+    else:
+        swap_fb = [[(1, 1), (1, 2)], [(2, 3), (3, 3)]]
+
+    return swap_fb
+
+
 
 # Définir la taille de la fenêtre une seule fois en dehors de la boucle
 screen_width = (5 + 1) * size
@@ -67,15 +83,6 @@ text_front = pygame.font.SysFont("Arial", 30)
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
-
-
-
-
-
-
-
-
-
 
 def draw_text_rect(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
@@ -222,16 +229,19 @@ while running:
                         else:
                             print("Swaps interdits désactivés")
                     elif button["level"] == "easy":
+                        swp_fb=swap_fb(2,3,"easy")
                         L0=generate_grids(3,5, 2, 3,"easy")
-                        easy_game(L0, size, swap_fb if swap_fb_enabled else [])
+                        easy_game(L0, size, swp_fb if swap_fb_enabled else [])
                         print(f"Clicked {button['level']} button")
                     elif button["level"] == "medium":
+                        swp_fb = swap_fb(3, 3, "medium")
                         L=generate_grids(6,10, 3, 3,"medium")
-                        easy_game(L, size, swap_fb if swap_fb_enabled else [])
+                        easy_game(L, size, swp_fb if swap_fb_enabled else [])
                         print(f"Clicked {button['level']} button")
                     elif button["level"] == "hard":
+                        swp_fb = swap_fb(4, 4, "hard")
                         L1=generate_grids(11,100, 4, 4,"hard")
-                        easy_game(L1, size, swap_fb if swap_fb_enabled else [])
+                        easy_game(L1, size, swp_fb if swap_fb_enabled else [])
                         print(f"Clicked {button['level']} button")
 
     screen.fill(white)
