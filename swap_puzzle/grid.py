@@ -265,14 +265,6 @@ class Grid():
                     compt+=1
         return compt
 
-    def manhattan_distance(self):
-        distance = 0
-        for i in range(self.m):
-            for j in range(self.n):
-                value = self.state[i][j]
-                goal_i, goal_j = divmod(value - 1, self.n)
-                distance += abs(i - goal_i) + abs(j - goal_j)
-        return distance
 
     def heuristique(self):
         s = 0
