@@ -29,11 +29,11 @@ def generate_10_grids(nb, m, n):
     return
 
 #Test des programmes avec des grilles aléatoires
-exemple=generate_random_grid(4,4)
+exemple=generate_random_grid(8,8)
 print(exemple)
 
 # Grille cible
-target_grid=creer_matrice(4,4)
+target_grid=creer_matrice(8,8)
 #target_grid=Grid(3,3,[[1,2,3],[4,5,6],[7,8,9]])
 
 # Question n°3
