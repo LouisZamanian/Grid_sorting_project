@@ -359,7 +359,7 @@ class Grid():
 
 
 #test de la représentation graphique
-#grid=Grid(2,3,[[1,3,4],[6,2,5]])
+grid=Grid(2,3,[[1,3,2],[4,6,5]])
 #grid.representation()
 
 

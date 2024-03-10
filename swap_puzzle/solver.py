@@ -44,6 +44,6 @@ class Solver(Grid):
         return nb, swp
 
 #Test de la fonction
-grid1= Solver(2, 3, [[1, 3,4], [2, 6,5]])
-grid2=Solver(2,2,[[1,3],[4,2]])
-print(grid2.get_solution())
+#grid1= Solver(2, 3, [[1, 3,4], [2, 6,5]])
+#grid2=Solver(2,2,[[1,3],[4,2]])
+#print(grid2.get_solution())

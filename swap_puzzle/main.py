@@ -11,7 +11,7 @@ file_name = data_path + "grid0.in"
 
 #fonctions utiles pour faire les tests
 def creer_matrice(m, n):
-    return Grid(m,n,[[i + j * m + 1 for i in range(m)] for j in range(n)])
+    return Grid(m, n, [[i + j * n + 1 for i in range(n)] for j in range(m)])
 
 def generate_random_grid(m, n):
     numbers = list(range(1, m * n + 1))
@@ -29,18 +29,20 @@ def generate_10_grids(nb, m, n):
     return
 
 #Test des programmes avec des grilles aléatoires
-exemple=generate_random_grid(8,8)
+#exemple=generate_random_grid(8,8)
+exemple=Grid(2,3,[[6,2,3],[4,5,1]])
 print(exemple)
 
 # Grille cible
-target_grid=creer_matrice(8,8)
+target_grid=creer_matrice(2,3)
+print(target_grid)
 #target_grid=Grid(3,3,[[1,2,3],[4,5,6],[7,8,9]])
 
 # Question n°3
 #Test de la fonction
-#grid1= Solver(2, 3, [[1, 3,4], [2, 6,5]])
+#grid1= Solver(2, 3, [[6, 2,3], [4, 5,1]])
 #grid2=Solver(2,2,[[1,3],[4,2]])
-#print(grid2.get_solution())
+#print(grid1.get_solution())
 
 # Obtenir le graphe des voisins
 #questionn°7:
