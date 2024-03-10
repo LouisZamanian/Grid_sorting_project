@@ -4,9 +4,8 @@ import random
 pygame.init()
 
 
-def creer_matrice(n, m):
-    return [[i + j * m + 1 for i in range(m)] for j in range(n)]
-
+def creer_matrice(m, n):
+    return [[i + j * n + 1 for i in range(n)] for j in range(m)]
 
 def generate_random_grid(m, n):
     numbers = list(range(1, m * n + 1))
@@ -27,7 +26,7 @@ def generate_grids(nb_inf,nb_sup, m, n,dif):
     elif dif=="medium":
         return Grid(3,3,[[1, 6, 2], [5, 8, 3], [4, 7, 9]])
     else:
-        return Grid(3,3,[[2, 9, 7], [5, 8, 4], [6, 3, 1]])
+        return Grid(4,4,[[2, 9, 7,10], [5, 8, 4,11], [6, 3, 1,13],[14,15,12,16]])
 
 
 # Définissions des couleurs

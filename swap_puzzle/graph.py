@@ -66,7 +66,7 @@ class Graph:
                     raise Exception("Format incorrect")
         return graph
 
-
+#Test de bfs sur  graph1.in et graph1.path.out
 #graph1 = Graph.graph_from_file("ENSAE-prog2024/input/graph1.in")
 source_node = 7
 destination_node = 14

@@ -9,15 +9,7 @@ data_path = "../input/"
 file_name = data_path + "grid0.in"
 
 
-
-
-#print(file_name)
-#print("bonjour")
-#g = Grid.grid_from_file(file_name)
-#print(g)
-exemple=Grid(4,4,[[1,16,14,12],[13,11,10,9],[5,2,8,3],[4,6,7,15]])
-#exemple=Grid(3,3,[[1,3,4],[2,6,5],[9,8,7]])
-
+#fonctions utiles pour faire les tests
 def creer_matrice(m, n):
     return Grid(m,n,[[i + j * m + 1 for i in range(m)] for j in range(n)])
 
@@ -31,53 +23,50 @@ def generate_10_grids(nb, m, n):
 
     for i in range(nb):
         grid = Grid(m, n, generate_random_grid(m, n))
-        neighbor_graph, arretes, noeuds = grid.a_star()
+        neighbor_graph, arretes, noeuds = grid.a_star_final_heapq()
         shortest_path = neighbor_graph.bfs(grid.transform(), target_grid.transform())
         print(grid.state, len(shortest_path))
     return
 
-#print(generate_10_grids(10,3,3))
-#exemple=Grid(5,5,generate_random_grid(5,5))
-#exemple=Grid(4,4,[[1,4,2,3],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
-#exemple = Grid(3,3, [[1,5,3],[4,2,6],[9,7,8]])
-exemple=generate_random_grid(6,6)
+#Test des programmes avec des grilles aléatoires
+exemple=generate_random_grid(4,4)
 print(exemple)
-#exp=Grid(2,2,[[1,2],[3,4]])
-
-#exp.generate_all_grid_states()
-#print(exp.generate_all_grid_states())
-
-# Obtenez le graphe des voisins
-#neighbor_graph = exemple.a_star()
 
 # Grille cible
-#target_grid = Grid(4,4, [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
-target_grid=creer_matrice(6,6)
+target_grid=creer_matrice(4,4)
 #target_grid=Grid(3,3,[[1,2,3],[4,5,6],[7,8,9]])
 
+# Question n°3
+#Test de la fonction
+#grid1= Solver(2, 3, [[1, 3,4], [2, 6,5]])
+#grid2=Solver(2,2,[[1,3],[4,2]])
+#print(grid2.get_solution())
 
-# Create the neighbor graph
+# Obtenir le graphe des voisins
+#questionn°7:
+#neighbor_graph, arretes, noeuds=exemple.generate_all_grid_states()
+
+#question n°8:
+#neighbor_graph, arretes, noeuds=exemple.next_neighbors_new()
+
+#Séance 3 : Question n°1
 neighbor_graph, arretes, noeuds = exemple.a_star_final_heapq()
-#neighbor_graph, arretes, noeuds = exemple.next_neighbors_new()
 
-# Obtain the shortest path between the initial and target grids
+
+#On applique ensuite bfs sur le graphe
 shortest_path = neighbor_graph.bfs(exemple.transform(), target_grid.transform())
 
-
-# Display the shortest path
+# Affichage des résultats
 print("Shortest Path:", shortest_path)
+print("Nombre de swaps :",len(shortest_path)-1)
 print("arretes",arretes)
 print("noeuds",noeuds)
 t2=time.time()
 print("temps",t2-t1)
 
-# Créez une instance de la classe Solver avec les dimensions de la grille et l'état initial
-#exemple_solver = Solver(2, 2, initial_state=[[1, 3], [4, 2]])
 
-# Appelez la méthode get_solution pour obtenir la solution du puzzle
-#nombre_swaps, sequence_swaps = exemple_solver.get_solution()
 
-# Affichez les résultats
+# Affichage des résultats
 #print("Nombre de swaps nécessaires :", nombre_swaps)
 #print("Sequence de swaps :", sequence_swaps)
 #print(len(shortest_path))

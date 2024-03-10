@@ -75,7 +75,7 @@ class Grid():
         return f"<grid.Grid: m={self.m}, n={self.n}>"
 
 #représentation graphique dans la console python
-    def representation(self):
+    def representation_old(self):
         ligne_superieure = "+-------" * (self.n) + "+\n"
 
         # Lignes du milieu
@@ -199,7 +199,7 @@ class Grid():
                         queue.append(new_grid)
                         g.add_edge(current_grid.transform(), new_grid_transform)
 
-        return visited,len(visited)
+        return g, g.nb_edges, g.nb_nodes
 
 
 
@@ -280,9 +280,8 @@ class Grid():
 
         for i in range(self.m):
             for j in range(self.n):
-                if self.state[i][j] != 0:  # Ignorer la case vide s'il y en a une
-                    target_row, target_col = divmod(self.state[i][j] - 1, self.n)
-                    s += abs(i - target_row) + abs(j - target_col)
+                target_row, target_col = divmod(self.state[i][j] - 1, self.n) #convertir la valeur de la tuile actuelle (self.state[i][j]) en coordonnées de la position cible (target_row, target_col)
+                s += abs(i - target_row) + abs(j - target_col)
 
         return s
 
@@ -365,6 +364,12 @@ class Grid():
                             return g, g.nb_edges, g.nb_nodes
 
         return g, g.nb_edges, g.nb_nodes
+
+
+#test de la représentation graphique
+#grid=Grid(2,3,[[1,3,4],[6,2,5]])
+#grid.representation()
+
 
 
 
