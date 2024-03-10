@@ -139,18 +139,25 @@ class Grid():
 
         # Question n°4
     def representation(self):
+        if not self.state or len(self.state) != self.m or any(len(row) != self.n for row in self.state):
+            print("La grille n'est pas correctement définie.")
+            return
+
         fig, ax = plt.subplots()
-        ax.set_xlim(0, self.n)  # on créer les axes verticaux et horizontaux à la bonne taille
+        ax.set_xlim(0, self.n)
         ax.set_ylim(0, self.m)
 
-        ax.set_xticks(range(self.m + 1))
-        ax.set_yticks(range(self.n))
-        ax.set_xticklabels([])  # on supprime les graduations pour ne garder que la grille
+        ax.set_xticks(range(self.n + 1))
+        ax.set_yticks(range(self.m))
+        ax.set_xticklabels([])
         ax.set_yticklabels([])
-        ax.grid(True, which='major', linestyle='-', linewidth=2, color='black')  # on trace le cadrillage
+        ax.grid(True, which='major', linestyle='-', linewidth=2, color='black')
+
         for i in range(self.m):
             for j in range(self.n):
-                ax.text(j + 0.5, self.m - i - 0.5, str(self.state[i][j]), fontsize=12)  # on remplit la grille
+                if 0 <= i < self.m and 0 <= j < self.n:
+                    ax.text(j + 0.5, self.m - i - 0.5, str(self.state[i][j]), fontsize=12)
+
         plt.show()
 
 
@@ -359,8 +366,8 @@ class Grid():
 
 
 #test de la représentation graphique
-grid=Grid(2,3,[[1,3,2],[4,6,5]])
-#grid.representation()
+grid=Grid(2,4,[[4,2,3,1],[5,6,7,8]])
+grid.representation()
 
 
 

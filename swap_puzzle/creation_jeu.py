@@ -17,7 +17,7 @@ def generate_grids(nb_inf,nb_sup, m, n,dif):
     target_grid = Grid(m, n, [[i + j * n + 1 for i in range(n)] for j in range(m)])
     for i in range(10):
         grid = Grid(m, n, generate_random_grid(m, n))
-        neighbor_graph, arretes, noeuds = grid.a_star()
+        neighbor_graph, arretes, noeuds = grid.a_star_final_heapq()
         shortest_path = neighbor_graph.bfs(grid.transform(), target_grid.transform())
         if nb_inf<len(shortest_path)<nb_sup:
             return grid
