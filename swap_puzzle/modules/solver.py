@@ -1,4 +1,4 @@
-from grid import Grid
+from swap_puzzle.modules.grid import Grid
 
 
 class Solver(Grid):

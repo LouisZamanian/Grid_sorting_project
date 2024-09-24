@@ -1,5 +1,5 @@
-from grid import Grid
-from solver import Solver
+from swap_puzzle.modules.grid import Grid
+from swap_puzzle.modules.solver import Solver
 import time
 import random
 t1=time.time()
